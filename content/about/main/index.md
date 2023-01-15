@@ -6,7 +6,7 @@ use_featured: false # if false, use most recent by date
 number_categories: 3 # set to zero to exclude
 show_intro: true
 intro: |
-  I've been inspired by the increasing desire to efficiently tune machine learning hyper-parameters and make better generalization under distributional shifts. I am looking for rigorously analyse conventional and non-conventional assumptions inherent to Bayesian optimisation and approximate inference. Automating the process of choosing the best forecasting model and its corresponding parameters can result to improve a widerange of real-world applications.
+  I've been inspired by the increasing desire to efficiently tune machine learning hyper-parameters and make better generalization under distributional shifts. I am looking for rigorously analyse conventional and non-conventional assumptions inherent to sequential prediction and approximate inference. Automating the process of choosing the best forecasting model and its corresponding parameters can result to improve a wide range of real-world applications.
 
   <i class="fas fa-certificate pr2"></i>[Financial Time Series Forcasting with Transformser](https://www.morganstanley.com)  &#8729;  MILA-Morgan Stanley, Montreal, Canada &#8729;2022
 
