@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head>
+  
+                           
+     
+
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.83.1" />
+<title>Approximate Bayesian Optimisation for Neural Networks | Nadhir Hassen</title>
+
+
+<meta property="twitter:site" content="@spcanelon">
+<meta property="twitter:creator" content="@spcanelon">
+
+
+
+
+
+
+
+  
+    
+  
+<meta name="description" content="Personal website of Nadhir Hassen">
+
+
+<meta property="og:site_name" content="Nadhir Hassen">
+<meta property="og:title" content="Approximate Bayesian Optimisation for Neural Networks | Nadhir Hassen">
+<meta property="og:description" content="Personal website of Nadhir Hassen" />
+<meta property="og:type" content="page" />
+<meta property="og:url" content="https://nadhirhass.netlify.app/publication/bo_project/" />
+<meta property="og:locale" content="en">
+
+
+
+
+    
+        <meta property="og:image" content="https://nadhirhass.netlify.app/img/LakePink_Social.png" >
+        <meta property="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://nadhirhass.netlify.app/img/LakePink_Social.png" >
+    
+  <meta itemprop="name" content="Approximate Bayesian Optimisation for Neural Networks">
+<meta itemprop="description" content="A novel Bayesian Optimization method based on a linearized link-function to accounts the under-presented class by using a GP surrogate model. This method is based on Laplace’s method and Gauss-Newton approximations to the Hessian. Our method can improve generalization and be useful when validation data is unavailable (e.g., in nonstationary settings) to solve heteroscedastic behaviours. Our experiments demonstrate that our BO by Gauss-Newton approach competes favorably with state-of-the-art blackbox optimization algorithms."><meta itemprop="datePublished" content="2021-07-10T16:26:27-05:00" />
+<meta itemprop="dateModified" content="2021-07-01T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="236">
+<meta itemprop="keywords" content="Hyper-parameter optimization,Bayesian Optimization,Machine Learning,Automating ML,Optimization,Gaussian Processes," />
+  
+  <!--[if IE]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="shortcut icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  <link rel="icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  
+  
+  <link rel="stylesheet" href="/style.main.min.c9a40da5612a51ebf5a49a932368f95bdbf3cdb647758b9cbb66393f2a752e50.css" integrity="sha256-yaQNpWEqUev1pJqTI2j5W9vzzbZHdYucu2Y5Pyp1LlA=" media="screen">
+  
+  
+  <script src="/panelset.min.d74e921a1b9af2d938fdff19e433ba539cdb202961eddae2356a54199f0653ec.js" type="text/javascript"></script>
+  
+  
+  <script src="/main.min.38a0323c5b0bbb611c4874ba2d8fdaba57d20cc2b0d704b30250c235ba8b6d49.js" type="text/javascript"></script>
+  
+  
+  <script src="/toc.min.f73cb355a2cb0aa2ae5f3f9693cfcaa76280e8a97ccfd2290c3cd514ee82f177.js" type="text/javascript"></script>
+</head>
+<body>
+      <div class="grid-container">
+<header class="site-header pt4 pb2 mb4 bb b--transparent ph5 headroom z-max" role="banner">
+  <nav class="site-nav db dt-l w-100" role="navigation">
+    <a class="site-brand db dtc-l v-mid link no-underline w-100 w-33-l tc tl-l" href="https://nadhirhass.netlify.app/" title="Home">
+      <img src="/img/logo_noBg.svg" class="dib db-l h2 w-auto" alt="Nadhir Hassen">
+    </a>
+    <div class="site-links db dtc-l v-mid w-100 w-47-l tc tr-l mt3 mt0-l ttu tracked">
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/about/" title="About Me">About</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/blog/" title="Collaborating With People">Blog</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/talk/" title="Talks and Presentations">Talks</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 active" href="/publication/" title="Research Publications">Publications</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/project/" title="Project Portfolio">Projects</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/teaching/" title="Teaching Portfolio">Teaching</a>
+      
+      
+    </div>
+  </nav>
+</header>
+
+<main class="page-main pa4" role="main">
+  <section class="page-content mw7 center">
+    <article class="post-content pa0 ph4-l">
+      <header class="post-header">
+        <h1 class="f1 lh-solid measure-narrow mb3 fw4">Approximate Bayesian Optimisation for Neural Networks</h1>
+        
+        <p class="f6 measure lh-copy mv1">By Nadhir Hassen &amp; Irina Rish in <a href="https://nadhirhass.netlify.app/categories/research">Research</a>  <a href="https://nadhirhass.netlify.app/categories/journal-of-machine-learning">Journal of Machine Learning</a> </p>
+        <p class="f7 db mv0 ttu">July 10, 2021</p>
+      
+      <div class="ph0 pt5">
+        
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+      
+  <a class="btn-links mr2 ba dib" href="https://arxiv.org/abs/2108.12461" target="_blank" rel="noopener"><i class="fas fa-file-pdf fa-lg fa-fw mr2"></i>Arxiv</a>
+
+    
+    
+    
+    
+    
+    
+    
+      
+      
+  <a class="btn-links mr2 ba dib" href="https://curvertino.netlify.app/pdf/Approximate_Bayesian_Optimisation_for_Neural_Networks_accepted.pdf" target="_blank" rel="noopener"><i class="ai ai-doi fa-lg fa-fw mr2"></i>Artificial Inteligence Workshop 2022</a>
+
+
+      </div>
+      
+      </header>
+      <section class="post-body pt5 pb4">
+        
+
+
+
+<h2 id="abstract">Abstract
+  <a href="#abstract" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>A body of work has been done to automate machine learning algorithms and to highlight the importance of model choice. Automating the process of choosing the best forecasting model and its corresponding parameters can result to improve a wide range of real-world applications. Bayesian optimisation (BO) uses a black-box optimisation methods to propose solutions according to an exploration-exploitation trade-off criterion through acquisition functions. BO framework imposes two key ingredients: a probabilistic surrogate model that consists of prior belief of the unknown dynamic of the model and an objective function that describes how optimal the model-fit. Choosing the best model and its associated hyperparameters can be very expensive, and is typically fit using Gaussian processes (GPs). However, since GPs scale cubically with the number of observations, it has been challenging to handle objectives whose optimisation requires many evaluations. In addition, most real-datasets are non-stationary which makes idealistic assumptions on surrogate models. The necessity to solve the analytical tractability and the computational feasibility in a stochastic fashion enables to ensure the efficiency and the applicability of Bayesian optimisation. In this paper we explore the use of approximate inference with Bayesian Neural Networks as an alternative to GPs to model distributions over functions. Our contribution is to provide a link between density-ratio estimation and class probability estimation based on approximate inference, this reformulation provides algorithm efficiency and tractability.</p>
+
+
+
+
+<h2 id="automate-machine-learning">Automate Machine Learning
+  <a href="#automate-machine-learning" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Improve Hyperparameter Learning with Approximate Bayesian Optimization.</p>
+<p><img src="branin_regret_blog.png" alt="2021 PSB Poster (letter)"></p>
+
+        
+        
+<details closed class="f6 fw7 input-reset">
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Posted on:</dt>
+    <dd class="fw5 ml0">July 10, 2021</dd>
+  </dl>
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Length:</dt>
+    <dd class="fw5 ml0">2 minute read, 236 words</dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Categories:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/categories/research">Research</a>  <a href="https://nadhirhass.netlify.app/categories/journal-of-machine-learning">Journal of Machine Learning</a> </dd>
+  </dl>
+  
+  
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Tags:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/tags/hyper-parameter-optimization">Hyper-parameter optimization</a>  <a href="https://nadhirhass.netlify.app/tags/bayesian-optimization">Bayesian Optimization</a>  <a href="https://nadhirhass.netlify.app/tags/machine-learning">Machine Learning</a>  <a href="https://nadhirhass.netlify.app/tags/automating-ml">Automating ML</a>  <a href="https://nadhirhass.netlify.app/tags/optimization">Optimization</a>  <a href="https://nadhirhass.netlify.app/tags/gaussian-processes">Gaussian Processes</a> </dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">See Also:</dt>
+    
+    <dd class="fw5 ml0"><a href="/publication/gfn_project/">GFlowOut: Dropout with Generative Flow Networks</a></dd>
+    
+    <dd class="fw5 ml0"><a href="/talk/2021-12-14-bnn-slides/">Approximate Bayesian Neural Networks</a></dd>
+    
+    <dd class="fw5 ml0"><a href="/publication/continual-learning/">Kronecker-factored approximation (KFAC) of the Laplace-GGN for Continual Learning</a></dd>
+    
+  </dl>
+</details>
+
+      </section>
+      <footer class="post-footer">
+        <div class="post-pagination dt w-100 mt4 mb2">
+  
+    <a class="prev dtc pr2 tl v-top fw6"
+    href="https://nadhirhass.netlify.app/publication/gfn_project/">&larr; GFlowOut: Dropout with Generative Flow Networks</a>
+  
+  
+    <a class="next dtc pl2 tr v-top fw6"
+    href="https://nadhirhass.netlify.app/publication/continual-learning/">Kronecker-factored approximation (KFAC) of the Laplace-GGN for Continual Learning &rarr;</a>
+  
+</div>
+
+      </footer>
+    </article>
+    
+  </section>
+</main>
+
+
+<footer class="site-footer pv4 bt b--transparent ph5" role="contentinfo">
+    <nav class="db dt-l w-100">
+    <p class="site-copyright f7 db dtc-l v-mid w-100 w-33-l tc tl-l pv2 pv0-l mv0 lh-copy">
+      &copy; 2023 Nadhir Hassen
+      <span class="middot-divider"></span>
+      Made with <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/hugo-apero/" rel="dct:source">Hugo Apéro</a></span>.
+      <br />
+      
+Based on <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/formspree/blogophonic-hugo" rel="dct:source">Blogophonic</a></span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://formspree.io" property="cc:attributionName" rel="cc:attributionURL">Formspree</a>.
+    </p>
+    
+    <div class="site-social-links db dtc-l v-mid w-100 w-33-l tc pv2 pv0-l mv0">
+      <div class="social-icon-links" aria-hidden="true">
+  
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="/accessibility/" title="universal-access" >
+      <i class="fas fa-universal-access fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://twitter.com/NadeerAct" title="twitter" target="_blank" rel="noopener">
+      <i class="fab fa-twitter fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://github.com/vincehass" title="github" target="_blank" rel="noopener">
+      <i class="fab fa-github fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://linkedin.com/in/nadhir-vincent-hass-216391aa" title="linkedin" target="_blank" rel="noopener">
+      <i class="fab fa-linkedin fa-lg fa-fw"></i>
+    </a>
+  
+</div>
+
+    </div>
+    
+    <div class="site-links f6 db dtc-l v-mid w-100 w-67-l tc tr-l pv2 pv0-l mv0">
+      
+      <a class="dib pv1 ph2 link" href="/accessibility/" title="Accessibility Commitment">Accessibility</a>
+      
+      <a class="dib pv1 ph2 link" href="/contact/" title="Contact Form">Contact</a>
+      
+      <a class="dib pv1 ph2 link" href="/license/" title="License Details">License</a>
+      
+      <a class="dib pv1 ph2 link" href="/blog/index.xml/" title="Subscribe via RSS">RSS</a>
+      
+    </div>
+  </nav>
+    <script src="//yihui.org/js/math-code.js"></script>
+    <script async
+      src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+    
+<script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</footer>
+      </div>
+    </body>
+</html>

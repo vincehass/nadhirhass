@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head>
+  
+                           
+     
+
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.83.1" />
+<title>Neural ODE Tutorial | Nadhir Hassen</title>
+
+
+<meta property="twitter:site" content="@spcanelon">
+<meta property="twitter:creator" content="@spcanelon">
+
+
+
+
+
+
+
+  
+    
+  
+<meta name="description" content="Personal website of Nadhir Hassen">
+
+
+<meta property="og:site_name" content="Nadhir Hassen">
+<meta property="og:title" content="Neural ODE Tutorial | Nadhir Hassen">
+<meta property="og:description" content="Personal website of Nadhir Hassen" />
+<meta property="og:type" content="page" />
+<meta property="og:url" content="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/" />
+<meta property="og:locale" content="en">
+
+
+
+
+    
+        <meta property="og:image" content="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/featured-hex.png" >
+        <meta property="twitter:card" content="summary">
+        <meta name="twitter:image" content="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/featured-hex.png" >
+    
+    
+  <meta itemprop="name" content="Neural ODE Tutorial">
+<meta itemprop="description" content="Introduction to Neural ODEThe Neural Ordinary Differential Equations paper has attracted significant attention even before it was awarded one of the Best Papers of NeurIPS 2018. The paper already gives many exciting results combining these two disparate fields, but this is only the beginning: neural networks and differential equations were born to be together. This blog post, a collaboration between authors of Flux, DifferentialEquations.jl and the Neural ODEs paper, will explain why, outline current and future directions for this work, and start to give a sense of what&rsquo;s possible with state-of-the-art tools."><meta itemprop="datePublished" content="2021-05-04T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-05-04T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2558"><meta itemprop="image" content="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/featured-hex.png">
+<meta itemprop="keywords" content="Neural ODE,Differential Equations,Dynamical System,Python," />
+  
+  <!--[if IE]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="shortcut icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  <link rel="icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  
+  
+  <link rel="stylesheet" href="/style.main.min.c9a40da5612a51ebf5a49a932368f95bdbf3cdb647758b9cbb66393f2a752e50.css" integrity="sha256-yaQNpWEqUev1pJqTI2j5W9vzzbZHdYucu2Y5Pyp1LlA=" media="screen">
+  
+  
+  <script src="/panelset.min.d74e921a1b9af2d938fdff19e433ba539cdb202961eddae2356a54199f0653ec.js" type="text/javascript"></script>
+  
+  
+  <script src="/main.min.38a0323c5b0bbb611c4874ba2d8fdaba57d20cc2b0d704b30250c235ba8b6d49.js" type="text/javascript"></script>
+  
+  
+  <script src="/toc.min.f73cb355a2cb0aa2ae5f3f9693cfcaa76280e8a97ccfd2290c3cd514ee82f177.js" type="text/javascript"></script>
+</head>
+<body>
+      <div class="grid-container single">
+<header class="site-header pt4 pb2 mb4 bb b--transparent ph5 headroom z-max" role="banner">
+  <nav class="site-nav db dt-l w-100" role="navigation">
+    <a class="site-brand db dtc-l v-mid link no-underline w-100 w-33-l tc tl-l" href="https://nadhirhass.netlify.app/" title="Home">
+      <img src="/img/logo_noBg.svg" class="dib db-l h2 w-auto" alt="Nadhir Hassen">
+    </a>
+    <div class="site-links db dtc-l v-mid w-100 w-47-l tc tr-l mt3 mt0-l ttu tracked">
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/about/" title="About Me">About</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/blog/" title="Collaborating With People">Blog</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/talk/" title="Talks and Presentations">Talks</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/publication/" title="Research Publications">Publications</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 active" href="/project/" title="Project Portfolio">Projects</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/teaching/" title="Teaching Portfolio">Teaching</a>
+      
+      
+    </div>
+  </nav>
+</header>
+
+<main class="page-main pa4" role="main">
+  <section class="page-content mw7 center">
+    <article class="post-content pa0 ph4-l">
+      <header class="post-header">
+        <h1 class="f1 lh-solid measure-narrow mb3 fw4">Neural ODE Tutorial</h1>
+        
+        <p class="f6 measure lh-copy mv1">By Nadhir Hassen in <a href="https://nadhirhass.netlify.app/categories/neural-ode">Neural ODE</a>  <a href="https://nadhirhass.netlify.app/categories/differential-equations">Differential Equations</a>  <a href="https://nadhirhass.netlify.app/categories/dynamical-system">Dynamical System</a>  <a href="https://nadhirhass.netlify.app/categories/python">Python</a> </p>
+        <p class="f7 db mv0 ttu">May 4, 2021</p>
+      
+      <div class="ph0 pt5">
+        
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+      
+  <a class="btn-links mr2 ba dib" href="https://github.com/rtqichen/torchdiffeq" target="_blank" rel="noopener"><i class="fas fa-box fa-lg fa-fw mr2"></i>package</a>
+
+
+      </div>
+      
+      </header>
+      <section class="post-body pt5 pb4">
+        
+
+
+
+<h2 id="introduction-to-neural-ode">Introduction to Neural ODE
+  <a href="#introduction-to-neural-ode" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>The Neural Ordinary Differential Equations paper has attracted significant attention even before it was awarded one of the Best Papers of NeurIPS 2018. The paper already gives many exciting results combining these two disparate fields, but this is only the beginning: neural networks and differential equations were born to be together. This blog post, a collaboration between authors of Flux, DifferentialEquations.jl and the Neural ODEs paper, will explain why, outline current and future directions for this work, and start to give a sense of what&rsquo;s possible with state-of-the-art tools.</p>
+
+
+
+
+<h2 id="rabbit-population">Rabbit population
+  <a href="#rabbit-population" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Imagine that some rabbits make their way onto an island that doesn&rsquo;t have any predators. We intially have N rabbits and after a month they make K more. After another month, those N+K rabbits make L rabbits and we observe that $\frac{N+k}{N} = \frac{L}{N+K}$, that is, the number of new-born rabbits is proportional to the number of rabbits currently on the island. If we denote time with the variable t, we&rsquo;ve observed the following relationship,
+$$
+\frac{\partial N(t)}{\partial t} = k N(t),
+$$
+that is, the rate of change of the population is proportional to the population. You may recognise this as the continuous version of the gemoetric progression $x_n = q x_{n-1}$. This equation is simple enough such that we can solve it 
+<a href="https://www.mathsisfun.com/calculus/differential-equations.html" target="_blank" rel="noopener">analytically</a> and obtain an explicit representation of $N(t)=Ce^{kt}$ for some value $C$. Most commonly, though, it is either very difficult or impossible to find an explicit solution for an equation of this kind, for example it is unclear how to solve (if it is possible at all),
+$$
+\left(\frac{\partial N(t)}{\partial t}\right)^3 + y^2 = N(t) y,
+$$
+without using some advanced methods. Even if we do not knowing the exact representation, we can still do interesting things with these equations. For example, we can re-arrange and start from some initial value N(0) and (approximately) simulate how these change in time by iteratively applying the below equation for some small time difference $\Delta t$,
+$$
+N(t  \Delta t) = N(t) + \sqrt[3]{N(t) y - y^2}\Delta t.
+$$
+This is known as the 
+<a href="https://en.wikipedia.org/wiki/Euler_method" target="_blank" rel="noopener">Euler method</a> and while it doesn&rsquo;t give great results due to the accumulation of errors, it shows how we can avoid requiring an explicit representation of N(t).</p>
+
+
+
+
+<h2 id="making-the-ode-neural">Making the ODE Neural
+  <a href="#making-the-ode-neural" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Looking at the previous section, we are inspired to ask ourselves the question what happens if we tried to model the derivative (with respect to time $t$) of the function $z(x)$ taking our inputs $x$ into our outputs $y$ with a neural network?. That is, we imagine that our function $z$ is some continuous transformation that starts at time $t=0$ at $x$ and arrives at $y$ at time $t=1$ and are interested in how it changes as we vary $t$ from 0 to 1. If we&rsquo;re fitting to data anyway, we&rsquo;ll learn some very complex and inscrutable function, so does it provide any advantages over trying to fit the function $z$ itself? The answer, as you may expect, is yes and we will spend the rest of this tutorial looking at various ways in which this is hepful.</p>
+<p>Firstly, though, let&rsquo;s briefly talk about exactly how we can learn the parameters $\theta$ of our network $f_{\theta}$ under this new setting. We will still employ gradient-based optimisation, which means that we need to find the quantity\n&quot;,
+$$
+\frac{\partial L(z(1), y)}{\partial \theta}
+$$
+where $L$ is the loss function (e.g. least squares), and $z(t)$ is the aforementioned continuous process, with $z(0) = x$ and $z(1) = \hat{y}$, that is, our prediction. Now, we know that $z(T) = z(0) + \int_0^T f_{\theta}(z(t), t) dt$, for some $0 &lt;= T &lt;= 1$, this is exactly us using our learnt derivative to find the value at time $t=T$ and is the analogue of running our &quot;network&quot; $G$ forward. Notice how we can set $T$ to be any real value, this is why we interpret Neural ODEs as having infinitely many hidden layers. As you may guess at this point, in order to fit our weights, we will need to do the equivalent of back-propagation through these infinite layers as well. This is where the concept of the adjoint state $a_z(t) = \frac{\partial L}{\partial z(t)}$ comes in - this is similar to the error signal $\delta$ in the normal neural network case. From here on out, with a bit of maths, we find the derivative of this adjoint state\n&quot;,
+$$
+\frac{\partial a_z(t)}{\partial t} = -a_z(t)\frac{\partial f_{\theta}(z(t),t)}{\partial z(t)}.
+$$.
+Just like having the derivative of $z(t)$ allowed us to calculate $z(T)$ for any $T$, we can now calculate $a_z(T)$ as well. Note that this computation is &quot;backwards in time&quot; - we start from the known quantity $a(1)$ and go back towards $a(T)$. Finally, by similar argument to the above, we can define other adjoints $a_{\theta}(t)$ and $a_t(t)$ to find each of $\frac{\partial L}{\partial \theta}$ and $\frac{\partial L}{\partial t}$. Unsuprisingly, we get,
+$$
+\frac{\partial a_{\theta}}{\partial t} = -a_z(t)\frac{\partial f_{\theta}(z(t),t)}{\partial \theta}, \\,
+\frac{\partial a_t}{\partial t} = -a_z(t)\frac{\partial f_{\theta}(z(t),t)}{\partial t},
+$$
+where again, the first line is reminiscent to how we compute the gradient of $\theta$ given the error signal $\delta$ and the current hidden state $h_t = f_{\theta}(z(t), t)$, and the last line follows the functional form of the other two. One final note is that we know $\frac{\partial L}{\partial t}$ at time $t=1$ exactly (it is $a_z(1)f_{\theta}(z(1), 1)$).
+With the gradients of $L$ with respect to its input parameters known, we can now minimise the function given some data.</p>
+<p>More detail on the maths can be found in this 
+<a href="https://ml.berkeley.edu/blog/posts/neural-odes/#training-odenets" target="_blank" rel="noopener">blog post</a></p>
+
+
+
+
+<h2 id="python-implementation">Python Implementation
+  <a href="#python-implementation" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>We use PyTorch to define the ODENet. We will go over the implementation from this 
+<a href="https://github.com/msurtsukov/neural-ode" target="_blank" rel="noopener">repo</a> as it is slightly more brief than the one in the original paper. First we modify the code as the following</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">ode_solve</span><span class="p">(</span><span class="n">z0</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+    <span class="s2">&#34;&#34;&#34;
+</span><span class="s2">    Simplest Euler ODE initial value solver
+</span><span class="s2">    &#34;&#34;&#34;</span>
+    <span class="n">h_max</span> <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="n">n_steps</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="nb">abs</span><span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span><span class="o">/</span><span class="n">h_max</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+    <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span><span class="o">/</span><span class="n">n_steps</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t0</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z0</span>
+
+    <span class="k">for</span> <span class="n">i_step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="n">h</span>
+    <span class="k">return</span> <span class="n">z</span>
+</code></pre></div><p>We will use the following trick several times from here on. If we want to solve several ODEs (in our case one for $a_z, a_{\theta}, a_t$ each) at the same time, we can concatenate the states of each separate ODE into a single augmented state (let&rsquo;s call that $a_{aug}$), and taking into account the Jacobian matrix, we can find $\frac{\partial a_{aug}(t)}{\partial t}$. This allows us to run an ODE solver on the augmented state and solve for the three variables at the same time. We define a function that performs the computation of the forward pass and the adjoint derivatives first</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">ODEF</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward_with_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">grad_outputs</span><span class="p">):</span>
+        <span class="s2">&#34;&#34;&#34;Compute f and a df/dz, a df/dp, a df/dt&#34;&#34;&#34;</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+        <span class="c1"># a_z in the description</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">grad_outputs</span>
+        <span class="c1"># Computes a_z [df/dz, df/dt, df/theta] using the augmented adjoint state [a_z, a_t, a_theta]</span>
+        <span class="n">adfdz</span><span class="p">,</span> <span class="n">adfdt</span><span class="p">,</span> <span class="o">*</span><span class="n">adfdp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">out</span><span class="p">,),</span> <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">()),</span> <span class="n">grad_outputs</span><span class="o">=</span><span class="p">(</span><span class="n">a</span><span class="p">),</span>
+            <span class="n">allow_unused</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">retain_graph</span><span class="o">=</span><span class="bp">True</span>
+        <span class="p">)</span>
+        <span class="c1"># grad method automatically sums gradients for batch items, we have to expand them back </span>
+        <span class="k">if</span> <span class="n">adfdp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">adfdp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">p_grad</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="k">for</span> <span class="n">p_grad</span> <span class="ow">in</span> <span class="n">adfdp</span><span class="p">])</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">adfdp</span> <span class="o">=</span> <span class="n">adfdp</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">batch_size</span>
+        <span class="k">if</span> <span class="n">adfdt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">adfdt</span> <span class="o">=</span> <span class="n">adfdt</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">batch_size</span>
+        <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">adfdz</span><span class="p">,</span> <span class="n">adfdt</span><span class="p">,</span> <span class="n">adfdp</span>
+
+    <span class="k">def</span> <span class="nf">flatten_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">p_shapes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">flat_parameters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+            <span class="n">p_shapes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+            <span class="n">flat_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">flat_parameters</span><span class="p">)</span>
+</code></pre></div><p>Next, we define a function that allows us to repeat the process described above for a series of times $[t_0, t_1, &hellip;, t_N]$. This will come in useful in the next section, where we do sequence modelling.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">ODEAdjoint</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">flat_parameters</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ODEF</span><span class="p">)</span>
+        <span class="n">bs</span><span class="p">,</span> <span class="o">*</span><span class="n">z_shape</span> <span class="o">=</span> <span class="n">z0</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+        <span class="n">time_len</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">time_len</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="o">*</span><span class="n">z_shape</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z0</span><span class="p">)</span>
+            <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">z0</span>
+            <span class="k">for</span> <span class="n">i_t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">time_len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">z0</span> <span class="o">=</span> <span class="n">ode_solve</span><span class="p">(</span><span class="n">z0</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="n">i_t</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i_t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">func</span><span class="p">)</span>
+                <span class="n">z</span><span class="p">[</span><span class="n">i_t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">z0</span>
+
+        <span class="n">ctx</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span> <span class="n">flat_parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">dLdz</span><span class="p">):</span>
+        <span class="s2">&#34;&#34;&#34;
+</span><span class="s2">        dLdz shape: time_len, batch_size, *z_shape
+</span><span class="s2">        &#34;&#34;&#34;</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">func</span>
+        <span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">flat_parameters</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
+        <span class="n">time_len</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="o">*</span><span class="n">z_shape</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+        <span class="n">n_dim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">z_shape</span><span class="p">)</span>
+        <span class="n">n_params</span> <span class="o">=</span> <span class="n">flat_parameters</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Dynamics of augmented system to be calculated backwards in time</span>
+        <span class="k">def</span> <span class="nf">augmented_dynamics</span><span class="p">(</span><span class="n">aug_z_i</span><span class="p">,</span> <span class="n">t_i</span><span class="p">):</span>
+            <span class="s2">&#34;&#34;&#34;
+</span><span class="s2">            tensors here are temporal slices
+</span><span class="s2">            t_i - is tensor with size: bs, 1
+</span><span class="s2">            aug_z_i - is tensor with size: bs, n_dim*2 + n_params + 1
+</span><span class="s2">            &#34;&#34;&#34;</span>
+            <span class="n">z_i</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">aug_z_i</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_dim</span><span class="p">],</span> <span class="n">aug_z_i</span><span class="p">[:,</span> <span class="n">n_dim</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n_dim</span><span class="p">]</span>  <span class="c1"># ignore parameters and time</span>
+
+            <span class="c1"># Unflatten z and a</span>
+            <span class="n">z_i</span> <span class="o">=</span> <span class="n">z_i</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="o">*</span><span class="n">z_shape</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="o">*</span><span class="n">z_shape</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">set_grad_enabled</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
+                <span class="n">t_i</span> <span class="o">=</span> <span class="n">t_i</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">z_i</span> <span class="o">=</span> <span class="n">z_i</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">func_eval</span><span class="p">,</span> <span class="n">adfdz</span><span class="p">,</span> <span class="n">adfdt</span><span class="p">,</span> <span class="n">adfdp</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">forward_with_grad</span><span class="p">(</span><span class="n">z_i</span><span class="p">,</span> <span class="n">t_i</span><span class="p">,</span> <span class="n">grad_outputs</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>  <span class="c1"># bs, *z_shape</span>
+                <span class="n">adfdz</span> <span class="o">=</span> <span class="n">adfdz</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z_i</span><span class="p">)</span> <span class="k">if</span> <span class="n">adfdz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="o">*</span><span class="n">z_shape</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z_i</span><span class="p">)</span>
+                <span class="n">adfdp</span> <span class="o">=</span> <span class="n">adfdp</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z_i</span><span class="p">)</span> <span class="k">if</span> <span class="n">adfdp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">n_params</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z_i</span><span class="p">)</span>
+                <span class="n">adfdt</span> <span class="o">=</span> <span class="n">adfdt</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z_i</span><span class="p">)</span> <span class="k">if</span> <span class="n">adfdt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z_i</span><span class="p">)</span>
+
+            <span class="c1"># Flatten f and adfdz</span>
+            <span class="n">func_eval</span> <span class="o">=</span> <span class="n">func_eval</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">)</span>
+            <span class="n">adfdz</span> <span class="o">=</span> <span class="n">adfdz</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">)</span> 
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">func_eval</span><span class="p">,</span> <span class="o">-</span><span class="n">adfdz</span><span class="p">,</span> <span class="o">-</span><span class="n">adfdp</span><span class="p">,</span> <span class="o">-</span><span class="n">adfdt</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">dLdz</span> <span class="o">=</span> <span class="n">dLdz</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">time_len</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">)</span>  <span class="c1"># flatten dLdz for convenience</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="c1">## Create placeholders for output gradients</span>
+            <span class="c1"># Prev computed backwards adjoints to be adjusted by direct gradients</span>
+            <span class="n">adj_z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dLdz</span><span class="p">)</span>
+            <span class="n">adj_p</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">n_params</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dLdz</span><span class="p">)</span>
+            <span class="c1"># In contrast to z and p we need to return gradients for all times</span>
+            <span class="n">adj_t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">time_len</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dLdz</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i_t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">time_len</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">z_i</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span>
+                <span class="n">t_i</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span>
+                <span class="n">f_i</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">z_i</span><span class="p">,</span> <span class="n">t_i</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">)</span>
+
+                <span class="c1"># Compute direct gradients</span>
+                <span class="n">dLdz_i</span> <span class="o">=</span> <span class="n">dLdz</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span>
+                <span class="n">dLdt_i</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">dLdz_i</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">f_i</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+                <span class="c1"># Adjusting adjoints with direct gradients</span>
+                <span class="n">adj_z</span> <span class="o">+=</span> <span class="n">dLdz_i</span>
+                <span class="n">adj_t</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">=</span> <span class="n">adj_t</span><span class="p">[</span><span class="n">i_t</span><span class="p">]</span> <span class="o">-</span> <span class="n">dLdt_i</span>
+
+                <span class="c1"># Pack augmented variable</span>
+                <span class="n">aug_z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">z_i</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">),</span> <span class="n">adj_z</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">n_params</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="n">adj_t</span><span class="p">[</span><span class="n">i_t</span><span class="p">]),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># Solve augmented system backwards</span>
+                <span class="n">aug_ans</span> <span class="o">=</span> <span class="n">ode_solve</span><span class="p">(</span><span class="n">aug_z</span><span class="p">,</span> <span class="n">t_i</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="n">i_t</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">augmented_dynamics</span><span class="p">)</span>
+
+                <span class="c1"># Unpack solved backwards augmented system</span>
+                <span class="n">adj_z</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">aug_ans</span><span class="p">[:,</span> <span class="n">n_dim</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n_dim</span><span class="p">]</span>
+                <span class="n">adj_p</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">aug_ans</span><span class="p">[:,</span> <span class="mi">2</span><span class="o">*</span><span class="n">n_dim</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n_dim</span> <span class="o">+</span> <span class="n">n_params</span><span class="p">]</span>
+                <span class="n">adj_t</span><span class="p">[</span><span class="n">i_t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">aug_ans</span><span class="p">[:,</span> <span class="mi">2</span><span class="o">*</span><span class="n">n_dim</span> <span class="o">+</span> <span class="n">n_params</span><span class="p">:]</span>
+
+                <span class="k">del</span> <span class="n">aug_z</span><span class="p">,</span> <span class="n">aug_ans</span>
+
+            <span class="c1">## Adjust 0 time adjoint with direct gradients</span>
+            <span class="c1"># Compute direct gradients </span>
+            <span class="n">dLdz_0</span> <span class="o">=</span> <span class="n">dLdz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dLdt_0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bmm</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">dLdz_0</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">f_i</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># Adjust adjoints</span>
+            <span class="n">adj_z</span> <span class="o">+=</span> <span class="n">dLdz_0</span>
+            <span class="n">adj_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">adj_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">dLdt_0</span>
+        <span class="k">return</span> <span class="n">adj_z</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="o">*</span><span class="n">z_shape</span><span class="p">),</span> <span class="n">adj_t</span><span class="p">,</span> <span class="n">adj_p</span><span class="p">,</span> <span class="bp">None</span>
+</code></pre></div><p>Finally, we define an neural network module wrapper of the function for more convenient use</p>
+<!-- <span style="background-color: #FFFF00">Marked text</span> -->
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">NeuralODE</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NeuralODE</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ODEF</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">Tensor</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]),</span> <span class="n">return_whole_sequence</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z0</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">ODEAdjoint</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">z0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">flatten_parameters</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_whole_sequence</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+
+
+
+<h2 id="continuous-time-sequence-models">Continuous-time sequence models
+  <a href="#continuous-time-sequence-models" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>In this section, let&rsquo;s look at the first two examples:</p>
+<!--  from this [reop](https://github.com/msurtsukov/neural-ode). -->
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">to_np</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">plot_trajectories</span><span class="p">(</span><span class="n">obs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">trajs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">)):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">o</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
+            <span class="n">o</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">to_np</span><span class="p">(</span><span class="n">o</span><span class="p">),</span> <span class="n">to_np</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">b_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">o</span><span class="p">[:,</span> <span class="n">b_i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">o</span><span class="p">[:,</span> <span class="n">b_i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">t</span><span class="p">[:,</span> <span class="n">b_i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">plasma</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">trajs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> 
+        <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">trajs</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">to_np</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+<span class="k">def</span> <span class="nf">conduct_experiment</span><span class="p">(</span><span class="n">ode_true</span><span class="p">,</span> <span class="n">ode_trained</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">plot_freq</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="c1"># Create data</span>
+    <span class="n">z0</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]]))</span>
+
+    <span class="n">t_max</span> <span class="o">=</span> <span class="mf">6.29</span><span class="o">*</span><span class="mi">5</span>
+    <span class="n">n_points</span> <span class="o">=</span> <span class="mi">200</span>
+
+    <span class="n">index_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+    <span class="n">index_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">index_np</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]])</span>
+    <span class="n">times_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
+    <span class="n">times_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">times_np</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]])</span>
+
+    <span class="n">times</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">times_np</span><span class="p">[:,</span> <span class="p">:,</span> <span class="bp">None</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">z0</span><span class="p">)</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">ode_true</span><span class="p">(</span><span class="n">z0</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">return_whole_sequence</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">obs</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.01</span>
+
+    <span class="c1"># Get trajectory of random timespan </span>
+    <span class="n">min_delta_time</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">max_delta_time</span> <span class="o">=</span> <span class="mf">5.0</span>
+    <span class="n">max_points_num</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="k">def</span> <span class="nf">create_batch</span><span class="p">():</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_max</span> <span class="o">-</span> <span class="n">max_delta_time</span><span class="p">)</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">min_delta_time</span><span class="p">,</span> <span class="n">max_delta_time</span><span class="p">)</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">index_np</span><span class="p">[(</span><span class="n">times_np</span> <span class="o">&gt;</span> <span class="n">t0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">times_np</span> <span class="o">&lt;</span> <span class="n">t1</span><span class="p">)])[:</span><span class="n">max_points_num</span><span class="p">])</span>
+
+        <span class="n">obs_</span> <span class="o">=</span> <span class="n">obs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">ts_</span> <span class="o">=</span> <span class="n">times</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">obs_</span><span class="p">,</span> <span class="n">ts_</span>
+
+    <span class="c1"># Train Neural ODE</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">ode_trained</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
+        <span class="n">obs_</span><span class="p">,</span> <span class="n">ts_</span> <span class="o">=</span> <span class="n">create_batch</span><span class="p">()</span>
+
+        <span class="n">z_</span> <span class="o">=</span> <span class="n">ode_trained</span><span class="p">(</span><span class="n">obs_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ts_</span><span class="p">,</span> <span class="n">return_whole_sequence</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">z_</span><span class="p">,</span> <span class="n">obs_</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">retain_graph</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">plot_freq</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">z_p</span> <span class="o">=</span> <span class="n">ode_trained</span><span class="p">(</span><span class="n">z0</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">return_whole_sequence</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+            <span class="n">plot_trajectories</span><span class="p">(</span><span class="n">obs</span><span class="o">=</span><span class="p">[</span><span class="n">obs</span><span class="p">],</span> <span class="n">times</span><span class="o">=</span><span class="p">[</span><span class="n">times</span><span class="p">],</span> <span class="n">trajs</span><span class="o">=</span><span class="p">[</span><span class="n">z_p</span><span class="p">],</span> <span class="n">save</span><span class="o">=</span><span class="n">f</span><span class="s2">&#34;assets/imgs/{name}/{i}.png&#34;</span><span class="p">)</span>
+            <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+<h2 id="simple-linear-ode">Simple linear ODE
+  <a href="#simple-linear-ode" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>We are given a two-dimensinal $\mathbf{z}(t)$, which changes according to the equation $$
+\frac{\partial \mathbf{z}}{\partial t} = \begin{bmatrix}
+-0.1 z_1 - z_2 \<br>
+z_1 - 0.1 z_2 \<br>
+\end{bmatrix}.
+$$ 
+This looks gives us a spiral from the initial point, going closer and closer around the origin.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># Restrict ODE to a linear function</span>
+<span class="k">class</span> <span class="nc">LinearODEF</span><span class="p">(</span><span class="n">ODEF</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LinearODEF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># True function</span>
+<span class="k">class</span> <span class="nc">SpiralFunctionExample</span><span class="p">(</span><span class="n">LinearODEF</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SpiralFunctionExample</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">Tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">]]))</span>
+        
+<span class="c1"># Random initial guess for function</span>
+<span class="k">class</span> <span class="nc">RandomLinearODEF</span><span class="p">(</span><span class="n">LinearODEF</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RandomLinearODEF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+
+<span class="n">ode_true</span> <span class="o">=</span> <span class="n">NeuralODE</span><span class="p">(</span><span class="n">SpiralFunctionExample</span><span class="p">())</span>
+<span class="n">ode_trained</span> <span class="o">=</span> <span class="n">NeuralODE</span><span class="p">(</span><span class="n">RandomLinearODEF</span><span class="p">())</span>
+
+<span class="n">conduct_experiment</span><span class="p">(</span><span class="n">ode_true</span><span class="p">,</span> <span class="n">ode_trained</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="s2">&#34;linear&#34;</span><span class="p">)</span>
+</code></pre></div><p><i class="fas fa-route pr2"></i>Simple linear ODE</p>
+<div class="figure" style="text-align: center">
+<img src="img/pic1.png" alt="The deploy contexts section after clicking the Edit settings button. This section shows three settings that can be edited. The first is the production branch which is set to 'main' in a free text box. The second is deploy previews which is a radio button set to 'any pull request against your production branch/branch deploy branches (as opposed to 'none'). The third is branch deploys which is a radio button set to 'all' (as opposed to 'none' and 'let me add individual branches'). There are two buttons at the bottom of this section, Save and Cancel." width="75%" />
+<p class="caption">Figure 2: Spriral function with random linear ODE </p>
+</div>
+
+
+
+
+<h2 id="more-complex-ode-2-layer-neural-network">More complex ODE: 2-layer neural network
+  <a href="#more-complex-ode-2-layer-neural-network" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Next we set up an ODE with more complicated dynamics. In this particular case, we will use a 2-layer neural network to produce the dynamics. That is, we have $$
+\frac{\partial \mathbf{z}}{\partial t} = f_{true}(\mathbf{z}(t), t)
+$$ for some 2-layer neural network $f_{true}$.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># True 2-layer neural network</span>
+<span class="k">class</span> <span class="nc">TestODEF</span><span class="p">(</span><span class="n">ODEF</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">x0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TestODEF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x0</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="n">xTx0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">dxdt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">xTx0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="o">-</span><span class="n">xTx0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dxdt</span>
+
+<span class="c1"># Neural network to learn the dynamics</span>
+<span class="k">class</span> <span class="nc">NNODEF</span><span class="p">(</span><span class="n">ODEF</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">,</span> <span class="n">hid_dim</span><span class="p">,</span> <span class="n">time_invariant</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NNODEF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_invariant</span> <span class="o">=</span> <span class="n">time_invariant</span>
+
+        <span class="k">if</span> <span class="n">time_invariant</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lin1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">hid_dim</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lin1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_dim</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">hid_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hid_dim</span><span class="p">,</span> <span class="n">hid_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hid_dim</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elu</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ELU</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_invariant</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin2</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lin3</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+<span class="n">func</span> <span class="o">=</span> <span class="n">TestODEF</span><span class="p">(</span><span class="n">Tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">]]),</span> <span class="n">Tensor</span><span class="p">([[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]]),</span> <span class="n">Tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]))</span>
+<span class="n">ode_true</span> <span class="o">=</span> <span class="n">NeuralODE</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+
+<span class="n">func</span> <span class="o">=</span> <span class="n">NNODEF</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">time_invariant</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ode_trained</span> <span class="o">=</span> <span class="n">NeuralODE</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+
+<span class="n">conduct_experiment</span><span class="p">(</span><span class="n">ode_true</span><span class="p">,</span> <span class="n">ode_trained</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="s2">&#34;comp&#34;</span><span class="p">,</span> <span class="n">plot_freq</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>        
+</code></pre></div><p><i class="fas fa-route pr2"></i>2-layer neural network</p>
+<div class="figure" style="text-align: center">
+<img src="img/pic2.png" alt="The deploy contexts section after clicking the Edit settings button. This section shows three settings that can be edited. The first is the production branch which is set to 'main' in a free text box. The second is deploy previews which is a radio button set to 'any pull request against your production branch/branch deploy branches (as opposed to 'none'). The third is branch deploys which is a radio button set to 'all' (as opposed to 'none' and 'let me add individual branches'). There are two buttons at the bottom of this section, Save and Cancel." width="75%" />
+<p class="caption">Figure 2: Spriral function with 2-layer neural network ODE </p>
+</div>
+
+
+
+
+<h2 id="further-work">Further work
+  <a href="#further-work" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>It turns out vanilla Neural ODEs are limited in what type of functions they can express. In particular, they struggle to fit functions like
+
+<a href="https://ml.berkeley.edu/blog/posts/neural-odes/#training-odenets" target="_blank" rel="noopener">this</a>
+because we&rsquo;re working in terms of the derivative. Think about what the derivative should be at the intersection of the blue and red curve. On one hand, it needs to be positive so the blue function can increase, but on the other hand, it needs to be negative so the red line can decrease. The way to overcome this issue is to introduce some extra &ldquo;ficticious&rdquo; dimensions and that approach is described in the paper Augmented Neural ODEs (ANODEs). In general, it is recommended that you use ANODEs instead of vanilla NODEs. A link to the GitHub repository can be found 
+<a href="https://github.com/EmilienDupont/augmented-neural-odes" target="_blank" rel="noopener">here</a>
+We here looked at only first-order ODEs (the order is the highest derivative involved in expressing the dynamics of the system). If you are interested in exploring ODEs of higher order, for example because you are interested in modelling a physical system with known dynamics that are of higher order, you can look at second-order ODEs (it briefly talks about higher orders as well), which are described 
+<a href="https://github.com/a-norcliffe/sonode" target="_blank" rel="noopener">here</a>.
+If you are interested in making the density estimation faster and thus more scalable, it is recommended that you refer to the follow up paper Free-form Jacobian of Reversible Dynamics 
+<a href="https://github.com/rtqichen/ffjord" target="_blank" rel="noopener">FFJORD</a>.
+Finally, if you are interested whether this approach is extendable to Stochastic Differential Equations, you can refer to this 
+<a href="http://proceedings.mlr.press/v118/li20a/li20a.pdf" target="_blank" rel="noopener">documnet</a> with (currently-ongoing) 
+<a href="https://github.com/google-research/torchsde" target="_blank" rel="noopener">implementation</a>.</p>
+
+        
+        
+<details closed class="f6 fw7 input-reset">
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Posted on:</dt>
+    <dd class="fw5 ml0">May 4, 2021</dd>
+  </dl>
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Length:</dt>
+    <dd class="fw5 ml0">13 minute read, 2558 words</dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Categories:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/categories/neural-ode">Neural ODE</a>  <a href="https://nadhirhass.netlify.app/categories/differential-equations">Differential Equations</a>  <a href="https://nadhirhass.netlify.app/categories/dynamical-system">Dynamical System</a>  <a href="https://nadhirhass.netlify.app/categories/python">Python</a> </dd>
+  </dl>
+  
+  
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Tags:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/tags/neural-ode">Neural ODE</a>  <a href="https://nadhirhass.netlify.app/tags/differential-equations">Differential Equations</a>  <a href="https://nadhirhass.netlify.app/tags/dynamical-system">Dynamical System</a>  <a href="https://nadhirhass.netlify.app/tags/python">Python</a> </dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">See Also:</dt>
+    
+    <dd class="fw5 ml0"><a href="/project/projects/neural_ode_tuto_anomaly/">Fraud detection with Graph Attention Networks</a></dd>
+    
+    <dd class="fw5 ml0"><a href="/blog/deep-learning/">Deep Reinforcement Learning-WindFarm</a></dd>
+    
+    <dd class="fw5 ml0"><a href="/blog/nodes/">Neural ODEs</a></dd>
+    
+  </dl>
+</details>
+
+      </section>
+      <footer class="post-footer">
+        <div class="post-pagination dt w-100 mt4 mb2">
+  
+    <a class="prev dtc pr2 tl v-top fw6"
+    href="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/">&larr; Fraud detection with Graph Attention Networks</a>
+  
+  
+</div>
+
+      </footer>
+    </article>
+    
+  </section>
+</main>
+
+
+<footer class="site-footer pv4 bt b--transparent ph5" role="contentinfo">
+    <nav class="db dt-l w-100">
+    <p class="site-copyright f7 db dtc-l v-mid w-100 w-33-l tc tl-l pv2 pv0-l mv0 lh-copy">
+      &copy; 2023 Nadhir Hassen
+      <span class="middot-divider"></span>
+      Made with <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/hugo-apero/" rel="dct:source">Hugo Apéro</a></span>.
+      <br />
+      
+Based on <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/formspree/blogophonic-hugo" rel="dct:source">Blogophonic</a></span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://formspree.io" property="cc:attributionName" rel="cc:attributionURL">Formspree</a>.
+    </p>
+    
+    <div class="site-social-links db dtc-l v-mid w-100 w-33-l tc pv2 pv0-l mv0">
+      <div class="social-icon-links" aria-hidden="true">
+  
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="/accessibility/" title="universal-access" >
+      <i class="fas fa-universal-access fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://twitter.com/NadeerAct" title="twitter" target="_blank" rel="noopener">
+      <i class="fab fa-twitter fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://github.com/vincehass" title="github" target="_blank" rel="noopener">
+      <i class="fab fa-github fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://linkedin.com/in/nadhir-vincent-hass-216391aa" title="linkedin" target="_blank" rel="noopener">
+      <i class="fab fa-linkedin fa-lg fa-fw"></i>
+    </a>
+  
+</div>
+
+    </div>
+    
+    <div class="site-links f6 db dtc-l v-mid w-100 w-67-l tc tr-l pv2 pv0-l mv0">
+      
+      <a class="dib pv1 ph2 link" href="/accessibility/" title="Accessibility Commitment">Accessibility</a>
+      
+      <a class="dib pv1 ph2 link" href="/contact/" title="Contact Form">Contact</a>
+      
+      <a class="dib pv1 ph2 link" href="/license/" title="License Details">License</a>
+      
+      <a class="dib pv1 ph2 link" href="/blog/index.xml/" title="Subscribe via RSS">RSS</a>
+      
+    </div>
+  </nav>
+    <script src="//yihui.org/js/math-code.js"></script>
+    <script async
+      src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+    
+<script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</footer>
+      </div>
+    </body>
+</html>

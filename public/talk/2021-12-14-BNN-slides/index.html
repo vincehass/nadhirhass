@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head>
+  
+                           
+     
+
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.83.1" />
+<title>Approximate Bayesian Neural Networks | Nadhir Hassen</title>
+
+
+<meta property="twitter:site" content="@spcanelon">
+<meta property="twitter:creator" content="@spcanelon">
+
+
+
+
+
+
+
+  
+    
+  
+<meta name="description" content="Bayesian pragmatism provides useful tools to tackle overfitting problems, but it comes at a cost, the exact Bayesian inference appropriate to a neural network is often intractable. Bayesian deep learning remains a good choice to design efficient methods by providing an approximate solution combining approximate inference and scalable optimization framework. However, the practical effectiveness of Bayesian neural networks is limited by the need to specify meaningful prior distributions, and by the intractability of posterior inference.">
+
+
+<meta property="og:site_name" content="Nadhir Hassen">
+<meta property="og:title" content="Approximate Bayesian Neural Networks | Nadhir Hassen">
+<meta property="og:description" content="Bayesian pragmatism provides useful tools to tackle overfitting problems, but it comes at a cost, the exact Bayesian inference appropriate to a neural network is often intractable. Bayesian deep learning remains a good choice to design efficient methods by providing an approximate solution combining approximate inference and scalable optimization framework. However, the practical effectiveness of Bayesian neural networks is limited by the need to specify meaningful prior distributions, and by the intractability of posterior inference." />
+<meta property="og:type" content="page" />
+<meta property="og:url" content="https://nadhirhass.netlify.app/talk/2021-12-14-bnn-slides/" />
+<meta property="og:locale" content="en">
+
+
+
+
+    
+        <meta property="og:image" content="https://nadhirhass.netlify.app/talk/2021-12-14-bnn-slides/featured.jpg" >
+        <meta property="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://nadhirhass.netlify.app/talk/2021-12-14-bnn-slides/featured.jpg" >
+    
+    
+  <meta itemprop="name" content="Approximate Bayesian Neural Networks">
+<meta itemprop="description" content="Descriptionwe address these issues by attempting to demystify the relationship between approximate inference and optimization approaches through the generalized Gauss–Newton method. Bayesian deep learning yields good results, combining Gauss–Newton with Laplace and Gaussian variational approximation. Both methods compute a Gaussian approximation to the posterior; however, it remains unclear how these methods affect the underlying probabilistic model and the posterior approximation. Both methods allow a rigorous analysis of how a particular model fails and the ability to quantify its uncertainty."><meta itemprop="datePublished" content="2021-05-31T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-12-31T09:30:00&#43;00:00" />
+<meta itemprop="wordCount" content="80"><meta itemprop="image" content="https://nadhirhass.netlify.app/talk/2021-12-14-bnn-slides/featured.jpg">
+<meta itemprop="keywords" content="Laplace Approximation,Gaussian Processes,Numerical Optimization," />
+  
+  <!--[if IE]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="shortcut icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  <link rel="icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  
+  
+  <link rel="stylesheet" href="/style.main.min.c9a40da5612a51ebf5a49a932368f95bdbf3cdb647758b9cbb66393f2a752e50.css" integrity="sha256-yaQNpWEqUev1pJqTI2j5W9vzzbZHdYucu2Y5Pyp1LlA=" media="screen">
+  
+  
+  <script src="/panelset.min.d74e921a1b9af2d938fdff19e433ba539cdb202961eddae2356a54199f0653ec.js" type="text/javascript"></script>
+  
+  
+  <script src="/main.min.38a0323c5b0bbb611c4874ba2d8fdaba57d20cc2b0d704b30250c235ba8b6d49.js" type="text/javascript"></script>
+  
+  
+  <script src="/toc.min.f73cb355a2cb0aa2ae5f3f9693cfcaa76280e8a97ccfd2290c3cd514ee82f177.js" type="text/javascript"></script>
+</head>
+<body>
+      <div class="grid-container">
+<header class="site-header pt4 pb2 mb4 bb b--transparent ph5 headroom z-max" role="banner">
+  <nav class="site-nav db dt-l w-100" role="navigation">
+    <a class="site-brand db dtc-l v-mid link no-underline w-100 w-33-l tc tl-l" href="https://nadhirhass.netlify.app/" title="Home">
+      <img src="/img/logo_noBg.svg" class="dib db-l h2 w-auto" alt="Nadhir Hassen">
+    </a>
+    <div class="site-links db dtc-l v-mid w-100 w-47-l tc tr-l mt3 mt0-l ttu tracked">
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/about/" title="About Me">About</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/blog/" title="Collaborating With People">Blog</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 active" href="/talk/" title="Talks and Presentations">Talks</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/publication/" title="Research Publications">Publications</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/project/" title="Project Portfolio">Projects</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/teaching/" title="Teaching Portfolio">Teaching</a>
+      
+      
+    </div>
+  </nav>
+</header>
+
+<main class="page-main pa4" role="main">
+  <section class="page-content mw7 center">
+    <article class="post-content pa0 ph4-l">
+      <header class="post-header">
+        <h1 class="f1 lh-solid measure-narrow mb3 fw4">Approximate Bayesian Neural Networks</h1>
+        <h2 class="f4 mt0 mb4 lh-title measure">Bayesian pragmatism provides useful tools to tackle overfitting problems, but it comes at a cost, the exact Bayesian inference appropriate to a neural network is often intractable. Bayesian deep learning remains a good choice to design efficient methods by providing an approximate solution combining approximate inference and scalable optimization framework. However, the practical effectiveness of Bayesian neural networks is limited by the need to specify meaningful prior distributions, and by the intractability of posterior inference.</h2>
+        <p class="f6 measure lh-copy mv1">By Nadhir Hassen in <a href="https://nadhirhass.netlify.app/categories/probabiistic-machine-learning">Probabiistic Machine Learning</a>  <a href="https://nadhirhass.netlify.app/categories/approximate-inference">Approximate Inference</a>  <a href="https://nadhirhass.netlify.app/categories/bayesian-optimization">Bayesian optimization</a>  <a href="https://nadhirhass.netlify.app/categories/hyperparameter-optimization">Hyperparameter optimization</a> </p>
+        <p class="f7 db mv0 ttu">May 31, 2021</p>
+      
+        <div class="ph0 pt5">
+          
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+      
+  <a class="btn-links mr2 ba dib" href="https://curvertino.netlify.app/pdf/BNN_approx_view-27.pdf" target="_blank" rel="noopener"><i class="fas fa-images fa-lg fa-fw mr2"></i>slides</a>
+
+
+        </div>
+      
+      <section class="event-details cf pt5-ns pt4">
+  
+  
+  <div class="first-column">
+    <h3 class="row-label">Date</h3>
+  </div>
+  <div class="second-column">
+    <p class="row-details">
+
+
+
+
+
+  December 31, 2021
+</p>
+  </div>
+  <div class="first-column">
+    <h3 class="row-label">Time</h3>
+  </div>
+  <div class="second-column">
+    <p class="row-details">
+
+
+
+
+  9:30 AM
+
+</p>
+  </div>
+  
+  
+  <div class="first-column">
+    <h3 class="row-label">Location</h3>
+  </div>
+  <div class="second-column">
+    <p class="row-details">Montreal, Canada</p>
+  </div>
+  
+  
+  <div class="first-column">
+    <h3 class="row-label">Event</h3>
+  </div>
+  <div class="second-column">
+      <p class="row-details">
+        <a href="https://www.polymtl.ca/renseignements-generaux/en/departments/" target="_blank">
+          Departement of Mathematics and Industrial Engineering</a>
+      </p>
+  </div>
+  
+</section>
+
+      </header>
+      <section class="post-body pt5 pb4">
+        <script src="https://nadhirhass.netlify.app/talk/2021-12-14-bnn-slides/index_files/fitvids/fitvids.min.js"></script>
+
+
+
+
+<h2 id="description">Description
+  <a href="#description" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>we address these issues by attempting to demystify the relationship between approximate inference and optimization approaches through the generalized Gauss–Newton method. Bayesian deep learning yields good results, combining Gauss–Newton with Laplace and Gaussian variational approximation. Both methods compute a Gaussian approximation to the posterior; however, it remains unclear how these methods affect the underlying probabilistic model and the posterior approximation. Both methods allow a rigorous analysis of how a particular model fails and the ability to quantify its uncertainty.
+<br><br></p>
+
+        
+        
+<details closed class="f6 fw7 input-reset">
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Posted on:</dt>
+    <dd class="fw5 ml0">May 31, 2021</dd>
+  </dl>
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Length:</dt>
+    <dd class="fw5 ml0">1 minute read, 80 words</dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Categories:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/categories/probabiistic-machine-learning">Probabiistic Machine Learning</a>  <a href="https://nadhirhass.netlify.app/categories/approximate-inference">Approximate Inference</a>  <a href="https://nadhirhass.netlify.app/categories/bayesian-optimization">Bayesian optimization</a>  <a href="https://nadhirhass.netlify.app/categories/hyperparameter-optimization">Hyperparameter optimization</a> </dd>
+  </dl>
+  
+  
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Tags:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/tags/laplace-approximation">Laplace Approximation</a>  <a href="https://nadhirhass.netlify.app/tags/gaussian-processes">Gaussian Processes</a>  <a href="https://nadhirhass.netlify.app/tags/numerical-optimization">Numerical Optimization</a> </dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">See Also:</dt>
+    
+    <dd class="fw5 ml0"><a href="/publication/bo_project/">Approximate Bayesian Optimisation for Neural Networks</a></dd>
+    
+    <dd class="fw5 ml0"><a href="/publication/continual-learning/">Kronecker-factored approximation (KFAC) of the Laplace-GGN for Continual Learning</a></dd>
+    
+    <dd class="fw5 ml0"><a href="/publication/orion_project/">Orion-Asynchronous Distributed Hyperparameter Optimization</a></dd>
+    
+  </dl>
+</details>
+
+      </section>
+      <footer class="post-footer">
+        <div class="post-pagination dt w-100 mt4 mb2">
+  
+  
+    <a class="next dtc pl2 tr v-top fw6"
+    href="https://nadhirhass.netlify.app/talk/2021-05-31-hbo-slides/">Bayesian Optimization for Heteroscedastic time series &rarr;</a>
+  
+</div>
+
+      </footer>
+    </article>
+    
+  </section>
+</main>
+<footer class="site-footer pv4 bt b--transparent ph5" role="contentinfo">
+    <nav class="db dt-l w-100">
+    <p class="site-copyright f7 db dtc-l v-mid w-100 w-33-l tc tl-l pv2 pv0-l mv0 lh-copy">
+      &copy; 2023 Nadhir Hassen
+      <span class="middot-divider"></span>
+      Made with <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/hugo-apero/" rel="dct:source">Hugo Apéro</a></span>.
+      <br />
+      
+Based on <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/formspree/blogophonic-hugo" rel="dct:source">Blogophonic</a></span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://formspree.io" property="cc:attributionName" rel="cc:attributionURL">Formspree</a>.
+    </p>
+    
+    <div class="site-social-links db dtc-l v-mid w-100 w-33-l tc pv2 pv0-l mv0">
+      <div class="social-icon-links" aria-hidden="true">
+  
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="/accessibility/" title="universal-access" >
+      <i class="fas fa-universal-access fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://twitter.com/NadeerAct" title="twitter" target="_blank" rel="noopener">
+      <i class="fab fa-twitter fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://github.com/vincehass" title="github" target="_blank" rel="noopener">
+      <i class="fab fa-github fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://linkedin.com/in/nadhir-vincent-hass-216391aa" title="linkedin" target="_blank" rel="noopener">
+      <i class="fab fa-linkedin fa-lg fa-fw"></i>
+    </a>
+  
+</div>
+
+    </div>
+    
+    <div class="site-links f6 db dtc-l v-mid w-100 w-67-l tc tr-l pv2 pv0-l mv0">
+      
+      <a class="dib pv1 ph2 link" href="/accessibility/" title="Accessibility Commitment">Accessibility</a>
+      
+      <a class="dib pv1 ph2 link" href="/contact/" title="Contact Form">Contact</a>
+      
+      <a class="dib pv1 ph2 link" href="/license/" title="License Details">License</a>
+      
+      <a class="dib pv1 ph2 link" href="/blog/index.xml/" title="Subscribe via RSS">RSS</a>
+      
+    </div>
+  </nav>
+    <script src="//yihui.org/js/math-code.js"></script>
+    <script async
+      src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+    
+<script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</footer>
+      </div>
+    </body>
+</html>

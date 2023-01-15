@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head>
+  
+                           
+     
+
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.83.1" />
+<title>Neural ODEs | Nadhir Hassen</title>
+
+
+<meta property="twitter:site" content="@spcanelon">
+<meta property="twitter:creator" content="@spcanelon">
+
+
+
+
+
+
+
+  
+    
+  
+<meta name="description" content="Neural Ordinary Differential Equation an Extension to Residual Network (ResNet)">
+
+
+<meta property="og:site_name" content="Nadhir Hassen">
+<meta property="og:title" content="Neural ODEs | Nadhir Hassen">
+<meta property="og:description" content="Neural Ordinary Differential Equation an Extension to Residual Network (ResNet)" />
+<meta property="og:type" content="page" />
+<meta property="og:url" content="https://nadhirhass.netlify.app/blog/nodes/" />
+<meta property="og:locale" content="en">
+
+
+
+
+    
+        <meta property="og:image" content="https://nadhirhass.netlify.app/blog/nodes/featured.png" >
+        <meta property="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="https://nadhirhass.netlify.app/blog/nodes/featured.png" >
+    
+    
+  <meta itemprop="name" content="Neural ODEs">
+<meta itemprop="description" content="Instead of specifying a discrete sequence of hidden layers, we parameterize the derivative of the hidden state using a neural network. The output of the network is computed using a black- box differential equation solver."><meta itemprop="datePublished" content="2021-08-02T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-08-02T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2475"><meta itemprop="image" content="https://nadhirhass.netlify.app/blog/nodes/featured.png">
+<meta itemprop="keywords" content="ODE,Dynamical Systems,Neural Network,Python," />
+  
+  <!--[if IE]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="shortcut icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  <link rel="icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  
+  
+  <link rel="stylesheet" href="/style.main.min.c9a40da5612a51ebf5a49a932368f95bdbf3cdb647758b9cbb66393f2a752e50.css" integrity="sha256-yaQNpWEqUev1pJqTI2j5W9vzzbZHdYucu2Y5Pyp1LlA=" media="screen">
+  
+  
+  <script src="/panelset.min.d74e921a1b9af2d938fdff19e433ba539cdb202961eddae2356a54199f0653ec.js" type="text/javascript"></script>
+  
+  
+  <script src="/main.min.38a0323c5b0bbb611c4874ba2d8fdaba57d20cc2b0d704b30250c235ba8b6d49.js" type="text/javascript"></script>
+  
+  
+  <script src="/toc.min.f73cb355a2cb0aa2ae5f3f9693cfcaa76280e8a97ccfd2290c3cd514ee82f177.js" type="text/javascript"></script>
+</head>
+<body>
+      <div class="grid-container single-sidebar">
+<header class="site-header pt4 pb2 mb4 bb b--transparent ph5 headroom z-max" role="banner">
+  <nav class="site-nav db dt-l w-100" role="navigation">
+    <a class="site-brand db dtc-l v-mid link no-underline w-100 w-33-l tc tl-l" href="https://nadhirhass.netlify.app/" title="Home">
+      <img src="/img/logo_noBg.svg" class="dib db-l h2 w-auto" alt="Nadhir Hassen">
+    </a>
+    <div class="site-links db dtc-l v-mid w-100 w-47-l tc tr-l mt3 mt0-l ttu tracked">
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/about/" title="About Me">About</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 active" href="/blog/" title="Collaborating With People">Blog</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/talk/" title="Talks and Presentations">Talks</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/publication/" title="Research Publications">Publications</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/project/" title="Project Portfolio">Projects</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/teaching/" title="Teaching Portfolio">Teaching</a>
+      
+      
+    </div>
+  </nav>
+</header>
+
+<main class="page-main pa4" role="main">
+  <section class="page-content mw7 center">
+    <article class="post-content pa0 pr3-l">
+      <header class="post-header">
+        <h1 class="f1 lh-solid measure-narrow mb3 fw4">Neural ODEs</h1>
+        <h2 class="f4 mt0 mb4 lh-title measure">Neural Ordinary Differential Equation an Extension to Residual Network (ResNet)</h2>
+        <p class="f6 measure lh-copy mv1">By Nadhir Hassen in <a href="https://nadhirhass.netlify.app/categories/python">Python</a>  <a href="https://nadhirhass.netlify.app/categories/ode">ODE</a>  <a href="https://nadhirhass.netlify.app/categories/dynamical-systems">Dynamical Systems</a> </p>
+        <p class="f7 db mv0 ttu">August 2, 2021</p>
+      
+        <div class="ph0 pt5">
+          
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+      
+  <a class="btn-links mr2 ba dib" href="https://curvertino.netlify.app/pdf/StochasticProcessTextbook.pdf" target="_blank" rel="noopener"><i class="fas fa-book fa-lg fa-fw mr2"></i>Dynamical Systems with Machine Learning in Engineering</a>
+
+
+        </div>
+      
+      </header>
+      <section class="post-body pt5 pb4">
+        <script src="https://nadhirhass.netlify.app/blog/nodes/index_files/clipboard/clipboard.min.js"></script>
+<link href="https://nadhirhass.netlify.app/blog/nodes/index_files/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+<script src="https://nadhirhass.netlify.app/blog/nodes/index_files/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+<script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i> Copy Code","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i> Copied!","error":"Press Ctrl+C to Copy"})</script>
+<link href="https://nadhirhass.netlify.app/blog/nodes/index_files/font-awesome/css/all.css" rel="stylesheet" />
+<link href="https://nadhirhass.netlify.app/blog/nodes/index_files/font-awesome/css/v4-shims.css" rel="stylesheet" />
+<style type="text/css">
+.page-main img {
+  box-shadow: 0px 0px 2px 2px rgba( 0, 0, 0, 0.2 );
+}
+</style>
+<p>In order to review the neural ODEs, we first recall some basics of ordinary differential equations (ODEs) and residual networks. Then we discuss neural ODEs and finally report some experiments on well-known datasets such as MNIST and CIFAR-10.</p>
+
+
+
+
+<h2 id="ordinary-differential-equations">Ordinary differential equations
+  <a href="#ordinary-differential-equations" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Mathematical modeling of physical systems boils down to ordinary differential equations (ODEs), partial differential equations (PDEs), integral equations (IEs), optimal control problems (OC) and inverse problems. Since IEs and PDEs can be converted to one or more ODEs, these equations are very popular and solving them is a very important problem in computational science. An ODE is a differential equation containing a function of the independent variable and the derivatives of this function. Given $F$, a function of $x, y$, and derivatives of $y$, the formal definition of an ODE of order $n$ has the form</p>
+<p>$$
+F\left(x,y,y',y'',\ \ldots ,\ y^{(n)}\right)=0
+$$</p>
+<p>where $y^{(n)}$ denotes the n-th derivative of $y$.</p>
+<p>Since the analytical methods for solving these problems often fails, mathematicians developed different numerical methods to approximate the exact solution. The major efforts can be classified into four general cases, finite difference, finite element/volume, spectral and meshless methods. Finite difference methods which are the oldest ones, use the ideas behind numerical differentiation. Among this, Euler method, Runge-Kutta and Adams-Bashforth are the most famous techniques. Euler method, introduced in the 1880s, is the most basic idea for approximating ODEs.</p>
+<p><strong>Theorem 1.</strong> Consider the first-order ODE</p>
+<p>$$
+\quad y' = f(x, y)
+$$</p>
+<p>subject to the initial condition $y(x_0) = y_0$. where $f(x,y)$ is a continuous real function. Let $y(x)$ be the particular solution of this ODE. For all $n \in \mathbb{N}$, we define:</p>
+<p>$$
+x_n = x_{n - 1} + h
+$$</p>
+<p>where $h \in \mathbb{R}^{&gt;0}$. Then for all $n \in \mathbb{N}$ such that $x_n$ is in the domain of $y$:</p>
+<p>$$
+y_{n + 1} = y_n + h f (x_n, y_n)
+$$</p>
+<p>is an approximation to $y (x_{n + 1} )$.</p>
+<p><strong>Proof.</strong> The proof is straightforward.</p>
+<p>Since Euler method usually fails to approximate the exact solution, the researchers extended this and designed more accurate and stable methods. Runge-Kutta and Adams-Bashforth are the results of these efforts. Morever, state-of-the-art methods use a more interesting idea and introduce adaptive methods. Unlike previous methods, these methods change the step length over the problem domain and evaluate the function in arbitrary placed nodes. This idea helps the method increase it&rsquo;s accuracy. This figure shows the effect of the adaptive solver on a simple ODE. Decreasing the step length $h$ increases the function evaluations (dot points on figure) which may increase the simulation time and instability of method.</p>
+<div align="center" style=" margin: 45px auto; ">
+    <img alt="Euler method vs. modern solvers" title="Euler method vs. modern solvers" src="https://nadhirhass.netlify.app/blog/nodes//neural-odes/solvers.gif" width="50%">
+    <br/>
+    <span>
+        Euler method vs. modern solvers
+    </span>
+</div>
+<!-- ![['Euler method vs. modern solvers'](PSB2021_poster_letter.pdf)](neural-odes/solvers.gif) -->
+
+
+
+
+<h2 id="resnets">ResNets
+  <a href="#resnets" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>As of the theoretical formulations of neural networks, increasing the depth of the network increases the complexity of the model and therefore increases the ability of the network for solving more complex problems with higher accuracy. But in the current implementation of neural networks, this theory does not work.</p>
+<div align="center" style=" margin: 45px auto; ">
+    <img src="https://nadhirhass.netlify.app/blog/nodes//neural-odes/deep.png" width="80%">
+    <br/>
+    <span>
+        The problem of gradient vanishing on MNIST and CIFAR-10 datasets.
+    </span>
+</div>
+<p>Researchers found that the gradient vanishing is the reason why this problem occurs. Since we use the backpropagation algorithm for training the model, we multiply the partial derivatives of the loss functions w.r.t internal operations of model. If one of the partial derivatives tends to zero, this multiplication causes the gradient to be very small and then the optimizer of the network doesn&rsquo;t move in weight space. And so the model does not trained!</p>
+<p>The Residual networks, 
+<a href="https://arxiv.org/abs/1512.03385" target="_blank" rel="noopener">Deep Residual Learning for Image Recognition</a>, which are introduced by the Microsoft research team, proposes a novel technique to overcome the gradient vanishing problem. They use a skip connection between layers of the network to move the information from each layer to the next one. The layer just needs to learn a residual which helps the model to increase the classification accuracy. The next figure compares the classical networks vs. the ResNtes.</p>
+<div align="center" style=" margin: 45px auto; ">
+    <img src="https://nadhirhass.netlify.app/blog/nodes//neural-odes/resnet.png" width="50%">
+    <br/>
+    <span>
+        Skip connection in ResNet vs classical MLP.
+    </span>
+</div>
+<p>The formal definition of these networks has the form</p>
+<p>$$
+\begin{aligned}
+y_t &amp;= h(z_t) + \mathcal{F}(z_t,\theta_t)\<br>
+z_{t+1} &amp;= f(y_t)
+\end{aligned}
+$$</p>
+<p>where $z_i$ is the output of $ith$ layer of the network, $\mathcal{F}$ is a block of some operations, such as single-layer non-linearity, convolutional block, etc., $\theta_i$ is the parameters of the $ith$ residual block, and $f,h$ are arbitrary functions. The function $h$ is usually set to identity mapping while $f$ maybe chose ReLU or identity. If we remove the term $h(z_t)$ this definition is equal to the classical networks. It&rsquo;s worth to note that, ResNets showed a very good approximation ability on different tasks versus the classical models.</p>
+
+
+
+
+<h2 id="neural-odes">Neural ODEs
+  <a href="#neural-odes" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Let&rsquo;s use identity mapping for both functions $f,h$ in the ResNet formulation. Then this definition reduces to</p>
+<p>$$
+z_{t+1} = z_t + \mathcal{F}(z_t, \theta_t).
+$$</p>
+<p>Acutually, this definiton is very similar to the Euler method for solving ODEs! The difference is just here we set step length $\Delta t$ to $1$. More precisely, a chain of $k$ residual blocks in a neural network is the Euler method with $k$ steps where step length is set to $1$.</p>
+<p>It seems that ResNets, which has good accuracy on different problems, solve an ODE to learn the classification task. In other words, There exists a first-order ODE which it&rsquo;s solution is the best hypothesis of the task. But why we use the Euler method? why not a modern adaptive solver? Before answering the question lets look at other types of neural networks. The next table shows that there are methods that are equivalent to other ODE solvers such as backward Euler and Runge-Kutta!</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Network</th>
+<th style="text-align:center">Fixed-step Numerical Scheme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ResNet, RevNet, ResNeXt, etc.</td>
+<td style="text-align:center">Forward Euler</td>
+</tr>
+<tr>
+<td style="text-align:center">PolyNet</td>
+<td style="text-align:center">Approximation to Backward Euler</td>
+</tr>
+<tr>
+<td style="text-align:center">FractalNet</td>
+<td style="text-align:center">Runge-Kutta</td>
+</tr>
+<tr>
+<td style="text-align:center">DenseNet</td>
+<td style="text-align:center">Runge-Kutta</td>
+</tr>
+</tbody>
+</table>
+<p>In the formal definition, Neural ODEs try to solve this ODE to learn a pattern recognition problem:</p>
+<p>$$
+\frac{dz}{dt} = \mathcal{F}(z(t),t,\theta)
+$$</p>
+<p>w.r.t initial condition $z(0) = x$ where $t \in [0, T]$ and $x$ is a sample form our dataset.</p>
+<p>The Neural ODEs idea is to replace the Euler method with a black box ODE solver which performs much better. But this replacement has a challenge! ODE solvers evaluate the function, in the different nodes. But the ResNet model was discrete and function evaluation is applied in specific places in the domain. To do this possible, authors propose a continuous network and then replace Euler method with an modern ODE solver. The evolution of this process can be done in four phases:</p>
+<ol>
+<li>In this code snippet, a unusual kind of ResNets, we have different residual blocks, each has their parameters.</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">nnet</span><span class="p">[</span><span class="n">t</span><span class="p">](</span><span class="n">z</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+    
+    <span class="k">def</span> <span class="nf">resnet</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">T</span><span class="p">]:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">F</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span>
+</code></pre></div><ol start="2">
+<li>Here we have $T$ residual blocks with the same architecture while they have their own parameters. This is the most common type of ResNets.</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">nnet</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+    
+    <span class="k">def</span> <span class="nf">resnet</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">T</span><span class="p">]:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">F</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span>
+</code></pre></div><ol start="3">
+<li>Here is the idea of continuous model with shared weights. Same as the previous model, the residual blocks in this model have the same architecture and parameters. But the difference is to inputting the network by pair $[z,t]$. This model lets us call the network with the desired value $t$, not just positive integers. Based on the value $t$ the output of network changes. In this case, the for loop plays the role of Euler method ODE solver.</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">nnet</span><span class="p">([</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">],</span> <span class="n">theta</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">FixedNODE</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">T</span><span class="p">]:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="n">F</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span>
+</code></pre></div><ol start="4">
+<li>Final idea: Replace the Euler method by a black box adaptive ODE solver.</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">nnet</span><span class="p">([</span><span class="n">z</span><span class="p">,</span><span class="n">t</span><span class="p">],</span> <span class="n">theta</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">AdaptiveNODE</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">ODESolve</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">z</span>
+</code></pre></div><p>The next figure compares the ResNets and NODEs. You can see the effect of adaptive solver.</p>
+<div align="center" style=" margin: 45px auto; ">
+    <img src="https://nadhirhass.netlify.app/blog/nodes//neural-odes/node.png" width="50%">
+    <br/>
+    <span>
+        Left: A Residual network defines a discrete sequence of finite transformations.<br>
+        Right: A ODE network defines a vector field, which continuously transforms the state.<br>
+        Both: Circles represent function evaluation locations.
+    </span>
+</div>
+<p>Till here, we proposed a continuous model and replaced the Euler method with a modern ODE solver. In other words, we replace a chain of residual blocks with an ODE-net block. The loss function can be computed with this calculation on the dataset:</p>
+<p>$$
+L(z_{T}) = L(ODESolve(\mathcal{F},z(t_0),t_0,T,\theta))
+$$</p>
+
+
+
+
+<h3 id="the-adjoint-method">The adjoint method
+  <a href="#the-adjoint-method" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h3>
+<p>The next problem is how to backpropagate the error through the model and compute the gradients for the optimizer. There are two main approaches to do this. the naive approach is to backpropagate the error through the ODE solver. This approach suffers from two problems. The first is memory usage will increase much if the ODE solver uses many complex computations and the second is the numerical error caused by multiplication of partial derivatives. The next approach is a novel technique that deals with some mathematics formulations instead of just a simple backpropagation algorithm. The pros of this approach are that it does not need to track internal operations and so no need for extra memory for backpropagation, so it has $O(1)$ memory. The cons of this method are that it needs to solve an ODE for finding the gradients. The adjoint method has diffenret applications if mathematics which i will discuss it later.</p>
+<p><strong>Theorem 2.</strong> By defining the adjoint state</p>
+<p>$$
+a(t) = \frac{\partial L}{\partial z(t)},
+$$</p>
+<p>its dynamics are given by ODE</p>
+<p>$$
+\frac{\text{d}a(t)}{\text{d}t} = - a(t)^T \frac{\partial \mathcal{F}(z(t),t,\theta)}{\partial z}
+$$</p>
+<p><strong>Theorem 3.</strong> The gradient of the loss function w.r.t parameters, hidden states and boundary limits can be obtained by solving the augmented ODE. The following algorithm, explains the procedure proved in the previous theorem.</p>
+<p><img src="https://nadhirhass.netlify.app/blog/nodes//neural-odes/adjoint-alg.png" alt="Algorithm" title="Algorithm"></p>
+
+
+
+
+<h3 id="properties">Properties
+  <a href="#properties" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h3>
+<p>In this section, we recall some properties of neural ODEs.</p>
+<ul>
+<li>
+<p>The first interesting one is The dept of neural ODEs! By referring to continuous model figure, we can see that in the ResNets number of function evaluations (Black circles) are an implicit value of the number of layers. For this point of view, we use the number of function evaluations as an implicit number of layers of neural ODEs. The experiments showed that the depth of neural ODEs increases during the training phase! Increasing the number of functions evaluations, aka number of layers, means that the ODE becomes more complex and more function evaluations are needed. This maybe is a direct result of overfitting. In the augmented neural ODE section, we propose a method for reducing the number of function evaluations.</p>
+</li>
+<li>
+<p>Another interesting fact about neural ODEs is that, if we use the adjoint method for computing gradients, we need to solve two different ODEs in the forward and backward phase. If we do this, the results showed that the function evaluations in the backward phase are about half of the number of function evaluations in the forward phase. In other words, the depth of the network in the forward phase is twice the depth of the network in the backward phase!</p>
+</li>
+<li>
+<p>Ability of changing ODE solver&rsquo;s tolerance is another property of this method. ODE solvers have methods that predict the accuracy of the solution and break the computation if the error is smaller than a tolerance. It&rsquo;s obvious that by changing this tolerance, the dept of model changes. An practical technique for accelerating the model in the test time is to use a very small tolerance at the training phase and increase this to a small value on the test phase. This helps us to find the prediction in less time.</p>
+</li>
+</ul>
+
+
+
+
+<h3 id="limitations">Limitations
+  <a href="#limitations" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h3>
+<p>There are some limitations in neural ODEs. The important one is the existence and uniqueness of the ODE solution. If we use usual architectures such as Convolution and LSTMs and use tanh and ReLU, the ODE has a unique solution. Another limitation is that these models are slower versus ResNets. See the original paper for other limitations.</p>
+
+
+
+
+<h2 id="augmented-neural-odes">Augmented neural ODEs
+  <a href="#augmented-neural-odes" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>What if the map we are trying to model cannot be described by a vector field? This is the core idea of 
+<a href="https://arxiv.org/abs/1904.01681" target="_blank" rel="noopener">Augmented Neural ODEs</a> paper. This figure shows a trajectory that neural ODE cannot map, but ResNet can!</p>
+<div align="center" style=" margin: 45px auto; ">
+    <img src="https://nadhirhass.netlify.app/blog/nodes//neural-odes/anode-a.png" width="49%">
+    <img src="https://nadhirhass.netlify.app/blog/nodes//neural-odes/anode-b.png" width="49%">
+    <br/>   
+</div>
+<!-- ![[](PSB2021_poster_letter.pdf)](neural-odes/anode-a.png)
+![[](PSB2021_poster_letter.pdf)](neural-odes/anode-b.png) -->
+ Since ResNet uses discrete steps, it can jump from some points which neural ODE cannot! To overcome this issue, the authors suggested to solve the problem in a higher-dimensional space. In the formal definition, if our hidden state is a vector in $\mathbb{R}^n$, we can add on $d$ extra dimensions and solve the ODE in $\mathbb{R}^{n+d}$. This approach helps the neural ODE to reach better accuracy with fewer epochs, fewer function evaluations, and more stability! The next figure shows the role of extra dimensions for two famous classification datasets, MNIST, CIFAR10. 
+<div align="center" style=" margin: 45px auto; ">
+    <img src="https://nadhirhass.netlify.app/blog/nodes//neural-odes/anode-1.png" width="100%">   
+    <br/>   
+</div>
+<p>Also this figure shows that adding extra dimensions helps us to reduce the instabilities of neural ODEs.</p>
+<div align="center" style=" margin: 45px auto; ">
+    <img src="https://nadhirhass.netlify.app/blog/nodes//neural-odes/anode-2.png" width="80%">    
+    <br/>   
+</div>
+
+
+
+
+<h2 id="benchmarks">Benchmarks
+  <a href="#benchmarks" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>The official implementation of neural ODEs is available in the Pytorch framework. There exist non-official implementations in Tensorflow and Keras but these don&rsquo;t implement the adjoint sensitivity method and so backpropagate the error through the ODE solver.</p>
+<p>Our first test is the official architecture in mnist example of NODE. We first downsample layers. Then we use 6 connected residual blocks for feature extraction. The classification task is done by using a fully connected layer which just after an adaptive pooling layer. The residual blocks in this architecture are made by a batch normalization (BN) with ReLU activation followed by a 3x3 convolution layer with BN and ReLU activation followed by a Conv layer. For the NODE we use the same architecture by just replacing 6 residual blocks by an ODE network. The following table compares the ResNet with NODE. We also tested the NODE with and without the adjoint method. By using the adjoint method we saw that the accuracy increases a bit but the learning time increases a lot!</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">Train</th>
+<th style="text-align:center">Test</th>
+<th style="text-align:center"># Params</th>
+<th style="text-align:center">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ResNet</td>
+<td style="text-align:center">99.56%</td>
+<td style="text-align:center">99.08%</td>
+<td style="text-align:center">576k</td>
+<td style="text-align:center">170s</td>
+</tr>
+<tr>
+<td style="text-align:center">NODE</td>
+<td style="text-align:center">99.63%</td>
+<td style="text-align:center">99.05%</td>
+<td style="text-align:center">208k</td>
+<td style="text-align:center">615s</td>
+</tr>
+<tr>
+<td style="text-align:center">NODE+ADJ</td>
+<td style="text-align:center">99.71%</td>
+<td style="text-align:center">99.16%</td>
+<td style="text-align:center">208k</td>
+<td style="text-align:center">855s</td>
+</tr>
+</tbody>
+</table>
+<p>The big difference between ResNets and NODE is the number of parameters. The NODE uses one-third parameters versus ResNet with better accuracy. The important problem is the running time of NODE which is about 5 times slower. Also, note that using NODE needs to call 5.4k times ODE solver.</p>
+<p>For the second example, we used the previous architecture on the Fashion MNIST dataset. We saw that same as the previous example, the NODE can reach the ResNet accuracy with much fewer parameters. The next table shows this experiment. Same as the previous experiment, the model solved 5.k ODEs to find the solution to this problem. The interesting fact is that using the adjoint method in this example not only slows down the learning time but also decreases the accuracy a bit.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">Train</th>
+<th style="text-align:center">Test</th>
+<th style="text-align:center"># Params</th>
+<th style="text-align:center">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ResNet</td>
+<td style="text-align:center">94.79%</td>
+<td style="text-align:center">91.15%</td>
+<td style="text-align:center">576k</td>
+<td style="text-align:center">220s</td>
+</tr>
+<tr>
+<td style="text-align:center">NODE</td>
+<td style="text-align:center">94.43%</td>
+<td style="text-align:center">91.21%</td>
+<td style="text-align:center">208k</td>
+<td style="text-align:center">850s</td>
+</tr>
+<tr>
+<td style="text-align:center">NODE+ADJ</td>
+<td style="text-align:center">93.80%</td>
+<td style="text-align:center">90.81%</td>
+<td style="text-align:center">208k</td>
+<td style="text-align:center">1010s</td>
+</tr>
+</tbody>
+</table>
+
+      </section>
+      <footer class="post-footer">
+        <div class="post-pagination dt w-100 mt4 mb2">
+  
+    <a class="prev dtc pr2 tl v-top fw6"
+    href="https://nadhirhass.netlify.app/blog/deep-learning/">&larr; Deep Reinforcement Learning-WindFarm</a>
+  
+  
+    <a class="next dtc pl2 tr v-top fw6"
+    href="https://nadhirhass.netlify.app/blog/sde-epidemic/">Stochastic differential equations: Application to epidemiology &rarr;</a>
+  
+</div>
+
+      </footer>
+    </article>
+    
+      
+<div class="post-comments pa0 pa4-l mt4">
+  
+  <script src="https://utteranc.es/client.js"
+          repo="spcanelon/silvia"
+          issue-term="title"
+          theme="boxy-light"
+          label="comments :crystal_ball:"
+          crossorigin="anonymous"
+          async
+          type="text/javascript">
+  </script>
+  
+</div>
+
+    
+  </section>
+</main>
+<aside class="page-sidebar" role="complementary">
+                         
+ 
+
+
+                       
+ 
+
+
+
+
+
+
+
+
+
+
+
+  <img src="/blog/sidebar.jpg" class="db ma0" alt="">
+
+
+
+<div class="blog-info ph4 pt4 pb4 pb0-l">
+  
+
+  <h1 class="f3">Collaborating With People about Their Passion</h1>
+  <p class="f6 lh-copy measure">This is my blog where I practice sharing my curiosity about Machine Learning. It includes notes and tutorials for my future self and hopefully also for you.</p>
+  <p class="f7 measure lh-copy i mh0-l">Written by Nadhir Hassen</p>
+
+
+  <small class="db f7"><a href="/blog/" class="dib fw7 ttu bt bw1 b--black-10 pt3">View recent posts</a></small>
+</div>
+
+
+  
+  
+  
+<details closed class="f6 fw7 input-reset">
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Posted on:</dt>
+    <dd class="fw5 ml0">August 2, 2021</dd>
+  </dl>
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Length:</dt>
+    <dd class="fw5 ml0">12 minute read, 2475 words</dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Categories:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/categories/python">Python</a>  <a href="https://nadhirhass.netlify.app/categories/ode">ODE</a>  <a href="https://nadhirhass.netlify.app/categories/dynamical-systems">Dynamical Systems</a> </dd>
+  </dl>
+  
+  
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Tags:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/tags/ode">ODE</a>  <a href="https://nadhirhass.netlify.app/tags/dynamical-systems">Dynamical Systems</a>  <a href="https://nadhirhass.netlify.app/tags/neural-network">Neural Network</a>  <a href="https://nadhirhass.netlify.app/tags/python">Python</a> </dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">See Also:</dt>
+    
+    <dd class="fw5 ml0"><a href="/blog/deep-learning/">Deep Reinforcement Learning-WindFarm</a></dd>
+    
+    <dd class="fw5 ml0"><a href="/blog/sde-epidemic/">Stochastic differential equations: Application to epidemiology</a></dd>
+    
+    <dd class="fw5 ml0"><a href="/teaching/projects/ml/">Probability and Statistics</a></dd>
+    
+  </dl>
+</details>
+
+                         
+
+
+
+<nav id="TableOfContents" class="sticky ph4 pb4 pt6" role="navigation">
+  <h2 class="mv0 f5 fw7 ttu tracked dib">On this page</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#ordinary-differential-equations">Ordinary differential equations</a></li>
+        <li><a href="#resnets">ResNets</a></li>
+        <li><a href="#neural-odes">Neural ODEs</a></li>
+        <li><a href="#augmented-neural-odes">Augmented neural ODEs</a></li>
+        <li><a href="#benchmarks">Benchmarks</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</nav>
+
+
+</aside>
+<footer class="site-footer pv4 bt b--transparent ph5" role="contentinfo">
+    <nav class="db dt-l w-100">
+    <p class="site-copyright f7 db dtc-l v-mid w-100 w-33-l tc tl-l pv2 pv0-l mv0 lh-copy">
+      &copy; 2023 Nadhir Hassen
+      <span class="middot-divider"></span>
+      Made with <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/hugo-apero/" rel="dct:source">Hugo Apéro</a></span>.
+      <br />
+      
+Based on <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/formspree/blogophonic-hugo" rel="dct:source">Blogophonic</a></span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://formspree.io" property="cc:attributionName" rel="cc:attributionURL">Formspree</a>.
+    </p>
+    
+    <div class="site-social-links db dtc-l v-mid w-100 w-33-l tc pv2 pv0-l mv0">
+      <div class="social-icon-links" aria-hidden="true">
+  
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="/accessibility/" title="universal-access" >
+      <i class="fas fa-universal-access fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://twitter.com/NadeerAct" title="twitter" target="_blank" rel="noopener">
+      <i class="fab fa-twitter fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://github.com/vincehass" title="github" target="_blank" rel="noopener">
+      <i class="fab fa-github fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://linkedin.com/in/nadhir-vincent-hass-216391aa" title="linkedin" target="_blank" rel="noopener">
+      <i class="fab fa-linkedin fa-lg fa-fw"></i>
+    </a>
+  
+</div>
+
+    </div>
+    
+    <div class="site-links f6 db dtc-l v-mid w-100 w-67-l tc tr-l pv2 pv0-l mv0">
+      
+      <a class="dib pv1 ph2 link" href="/accessibility/" title="Accessibility Commitment">Accessibility</a>
+      
+      <a class="dib pv1 ph2 link" href="/contact/" title="Contact Form">Contact</a>
+      
+      <a class="dib pv1 ph2 link" href="/license/" title="License Details">License</a>
+      
+      <a class="dib pv1 ph2 link" href="/blog/index.xml/" title="Subscribe via RSS">RSS</a>
+      
+    </div>
+  </nav>
+    <script src="//yihui.org/js/math-code.js"></script>
+    <script async
+      src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+    
+<script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</footer>
+      </div>
+    </body>
+</html>

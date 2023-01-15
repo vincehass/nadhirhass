@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/categories/python/</link>
+    <description>Recent content in Python on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 02 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Neural ODEs</title>
+      <link>https://nadhirhass.netlify.app/blog/nodes/</link>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/blog/nodes/</guid>
+      <description>Instead of specifying a discrete sequence of hidden layers, we parameterize the derivative of the hidden state using a neural network. The output of the network is computed using a black- box differential equation solver.</description>
+    </item>
+    
+    <item>
+      <title>Neural ODE Tutorial</title>
+      <link>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/</link>
+      <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/</guid>
+      <description>Introduction to Neural ODEThe Neural Ordinary Differential Equations paper has attracted significant attention even before it was awarded one of the Best Papers of NeurIPS 2018. The paper already gives many exciting results combining these two disparate fields, but this is only the beginning: neural networks and differential equations were born to be together. This blog post, a collaboration between authors of Flux, DifferentialEquations.jl and the Neural ODEs paper, will explain why, outline current and future directions for this work, and start to give a sense of what&amp;rsquo;s possible with state-of-the-art tools.</description>
+    </item>
+    
+    <item>
+      <title>Probability and Statistics</title>
+      <link>https://nadhirhass.netlify.app/teaching/projects/ml/</link>
+      <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/teaching/projects/ml/</guid>
+      <description>Program overviewPart I Axioms, conditional probability, Bayes rule, combinatorial analysis. Random variables: functions of distribution, mass and density, expectation and variance. Discrete and continuous probability laws. Reliability. Random vectors: correlation, multinormal distribution, central limit theorem Stochastic processes: Markov chains, Poisson process, Brownian motion. Descriptive statistics: diagrams, calculation of characteristics. Sampling distributions: estimate, mean squared error, confidence intervals. - Hypothesis tests: parametric tests and fit test.</description>
+    </item>
+    
+    <item>
+      <title>Probability and Statistics</title>
+      <link>https://nadhirhass.netlify.app/teaching/projects/mth2303/</link>
+      <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/teaching/projects/mth2303/</guid>
+      <description>Program overviewPart I Axioms, conditional probability, Bayes rule, combinatorial analysis. Random variables: functions of distribution, mass and density, expectation and variance. Discrete and continuous probability laws. Reliability. Random vectors: correlation, multinormal distribution, central limit theorem Stochastic processes: Markov chains, Poisson process, Brownian motion. Descriptive statistics: diagrams, calculation of characteristics. Sampling distributions: estimate, mean squared error, confidence intervals. - Hypothesis tests: parametric tests and fit test.</description>
+    </item>
+    
+  </channel>
+</rss>

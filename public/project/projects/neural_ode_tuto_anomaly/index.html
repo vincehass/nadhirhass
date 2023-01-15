@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head>
+  
+                           
+     
+
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.83.1" />
+<title>Fraud detection with Graph Attention Networks | Nadhir Hassen</title>
+
+
+<meta property="twitter:site" content="@spcanelon">
+<meta property="twitter:creator" content="@spcanelon">
+
+
+
+
+
+
+
+  
+    
+  
+<meta name="description" content="Personal website of Nadhir Hassen">
+
+
+<meta property="og:site_name" content="Nadhir Hassen">
+<meta property="og:title" content="Fraud detection with Graph Attention Networks | Nadhir Hassen">
+<meta property="og:description" content="Personal website of Nadhir Hassen" />
+<meta property="og:type" content="page" />
+<meta property="og:url" content="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/" />
+<meta property="og:locale" content="en">
+
+
+
+
+    
+        <meta property="og:image" content="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/featured-hex.png" >
+        <meta property="twitter:card" content="summary">
+        <meta name="twitter:image" content="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/featured-hex.png" >
+    
+    
+  <meta itemprop="name" content="Fraud detection with Graph Attention Networks">
+<meta itemprop="description" content="Introduction to Fraud detectionFraud detection is a set of processes and analyses that allow businesses to identify and prevent unauthorized financial activity. This can include fraudulent credit card transactions, identify theft, cyber hacking, insurance scams, and more. A fraud occurs when someone takes money or other assets from you through deception or criminal activity.
+Consequently, having an effective fraud detection system can help institutions to identify suspicious behaviors or accounts and minimize losses if the fraud is ongoing."><meta itemprop="datePublished" content="2022-12-01T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2022-12-01T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="3251"><meta itemprop="image" content="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/featured-hex.png">
+<meta itemprop="keywords" content="Graphical neural network,Anomaly detection,Dynamical System,Generative model," />
+  
+  <!--[if IE]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="shortcut icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  <link rel="icon" href="/img/logo_rounded.ico" type="image/x-icon">
+  
+  
+  <link rel="stylesheet" href="/style.main.min.c9a40da5612a51ebf5a49a932368f95bdbf3cdb647758b9cbb66393f2a752e50.css" integrity="sha256-yaQNpWEqUev1pJqTI2j5W9vzzbZHdYucu2Y5Pyp1LlA=" media="screen">
+  
+  
+  <script src="/panelset.min.d74e921a1b9af2d938fdff19e433ba539cdb202961eddae2356a54199f0653ec.js" type="text/javascript"></script>
+  
+  
+  <script src="/main.min.38a0323c5b0bbb611c4874ba2d8fdaba57d20cc2b0d704b30250c235ba8b6d49.js" type="text/javascript"></script>
+  
+  
+  <script src="/toc.min.f73cb355a2cb0aa2ae5f3f9693cfcaa76280e8a97ccfd2290c3cd514ee82f177.js" type="text/javascript"></script>
+</head>
+<body>
+      <div class="grid-container single">
+<header class="site-header pt4 pb2 mb4 bb b--transparent ph5 headroom z-max" role="banner">
+  <nav class="site-nav db dt-l w-100" role="navigation">
+    <a class="site-brand db dtc-l v-mid link no-underline w-100 w-33-l tc tl-l" href="https://nadhirhass.netlify.app/" title="Home">
+      <img src="/img/logo_noBg.svg" class="dib db-l h2 w-auto" alt="Nadhir Hassen">
+    </a>
+    <div class="site-links db dtc-l v-mid w-100 w-47-l tc tr-l mt3 mt0-l ttu tracked">
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/about/" title="About Me">About</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/blog/" title="Collaborating With People">Blog</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/talk/" title="Talks and Presentations">Talks</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/publication/" title="Research Publications">Publications</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 active" href="/project/" title="Project Portfolio">Projects</a>
+      
+        
+        
+        
+      <a class="link f6 f5-l dib pv1 ph2 " href="/teaching/" title="Teaching Portfolio">Teaching</a>
+      
+      
+    </div>
+  </nav>
+</header>
+
+<main class="page-main pa4" role="main">
+  <section class="page-content mw7 center">
+    <article class="post-content pa0 ph4-l">
+      <header class="post-header">
+        <h1 class="f1 lh-solid measure-narrow mb3 fw4">Fraud detection with Graph Attention Networks</h1>
+        
+        <p class="f6 measure lh-copy mv1">By Nadhir Hassen in <a href="https://nadhirhass.netlify.app/categories/graphical-neural-network">Graphical neural network</a>  <a href="https://nadhirhass.netlify.app/categories/anomaly-detection">Anomaly detection</a>  <a href="https://nadhirhass.netlify.app/categories/dynamical-system">Dynamical System</a>  <a href="https://nadhirhass.netlify.app/categories/generative-model">Generative model</a> </p>
+        <p class="f7 db mv0 ttu">December 1, 2022</p>
+      
+      <div class="ph0 pt5">
+        
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+      
+  <a class="btn-links mr2 ba dib" href="https://pytorch-geometric.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener"><i class="fas fa-box fa-lg fa-fw mr2"></i>Pytorch Geometric Doc</a>
+
+
+      </div>
+      
+      </header>
+      <section class="post-body pt5 pb4">
+        
+
+
+
+<h2 id="introduction-to-fraud-detection">Introduction to Fraud detection
+  <a href="#introduction-to-fraud-detection" title="Link to heading"><svg class="anchor-symbol" aria-hidden="true" height="26" width="26" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h24v24H0z" fill="currentColor"></path>
+      <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76.0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71.0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71.0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76.0 5-2.24 5-5s-2.24-5-5-5z"></path>
+    </svg></a>
+</h2>
+<p>Fraud detection is a set of processes and analyses that allow businesses to identify and prevent unauthorized financial activity. This can include fraudulent credit card transactions, identify theft, cyber hacking, insurance scams, and more. A fraud occurs when someone takes money or other assets from you through deception or criminal activity.</p>
+<p>Consequently, having an effective fraud detection system can help institutions to identify suspicious behaviors or accounts and minimize losses if the fraud is ongoing.The fraud detection model based on ML algorithms is challenging for many reasons: fraud represent a small portion of all the daily transactions, its distribution evolves quickly over time then true transaction label will be only available after several days, because investigators could not timely check all the transactions.</p>
+<p>But traditional methods of Machine learning still fail to detect a fraud because most data science models omit something critically important: network structure.</p>
+<p>Fraud detection like social networks imply the use of the power of a Graph. The following figure is an example of graph transactions network, we can see some nodes like bank account, credit card, person with their relationships.</p>
+<p>In fact, tabular data models, with data organized in rows and columns, are not designed for capturing the complex relationships and network structure inherent in your data. Analyzing data as a graph enables us to reveal and use its structure for predictions.</p>
+<p>Therefore, using graphs handles many complex issues, it works for huge amount of data with multiple edges relationships that can change over time. Graph Machine learning improves the accuracy of fraud predictions by using more relevant features information from the network.</p>
+
+
+
+
+<h1 id="graph-representation">Graph Representation
+  <a href="#graph-representation" title="Link to heading"></a>
+</h1>
+<p>A node in the graph represents a transaction, an edge represents a flow of Bitcoins between one transaction and the other. Each node has 166 features and has been labeled as being created by a “licit”, “illicit” or “unknown” entity.</p>
+<p>There are 203,769 nodes and 234,355 edges in the graph, we have two percent (4,545) of the nodes that are labelled class1 (illicit), and twenty-one percent (42,019) are labelled class2 (licit) as we can see in Figure 2. The remaining transactions are not labelled with regard to licit versus illicit.There are 49 distinct time steps.</p>
+<p>The first 94 features represent local information about the transaction and the remaining 72 features are aggregated features obtained using transaction information one-hop backward/forward from the center node — giving the maximum, minimum, standard deviation and correlation coefficients of the neighbor transactions for the same information data (number of inputs/outputs, transaction fee, etc.).</p>
+<p>So with this dataset, we will work on a node classification task, where the goal is to predict if a node is licit or illicit.</p>
+<p>A working knowledge of Pytorch is required to understand the programming examples.We will assume a basic understanding of machine learning, neural networks and backpropagation.</p>
+
+
+
+
+<h1 id="graph-neural-networks">Graph Neural Networks
+  <a href="#graph-neural-networks" title="Link to heading"></a>
+</h1>
+<p>The Graph Neural Networks (GNNs) [8,9,10] is gaining increasing popularity. GNNs are neural networks that can be directly applied to graphs and provide an easy way to do node-level, edge-level, and graph-level prediction tasks.</p>
+<p>Recent years GNNs have seen significant developments and successes in many problems like the fields of biology, chemistry, social science, physics, and many others. It has led to state-of-the-art performance on several benchmarks. GNNs consider not only instance-level features but also graph-level features by performing message passage to agglomerate information from neighbors when making decisions, which is shown in the following figure. This leads to great performance on this kind of task.</p>
+<div class="figure" style="text-align: center">
+<img src="img/graph.png" alt="The deploy contexts section after clicking the Edit settings button. This section shows three settings that can be edited. The first is the production branch which is set to 'main' in a free text box. The second is deploy previews which is a radio button set to 'any pull request against your production branch/branch deploy branches (as opposed to 'none'). The third is branch deploys which is a radio button set to 'all' (as opposed to 'none' and 'let me add individual branches'). There are two buttons at the bottom of this section, Save and Cancel." width="75%" />
+<p class="caption">Figure 1: GNN Mechanism </p>
+</div>
+<p>GNN converts a graphical relationship into a system where information messages are passed from neighborhood nodes through edges and aggregated into the target node (Figure 5 right). There are many variants of GNN which differ to each other on how each node aggregates and combines the representations of its neighbors with its own.</p>
+<p>In this blog post, for a fraud detection task on the Bitcoin transactions, we will present you the attention mechanism through the original GAT model then we will show you a second version called GATv2.</p>
+<p>Graph Attention Networks (GATs) are one of the most popular GNN architectures that performs better than other models on several benchmark and tasks, was introduced by Velickovic et al. (2018). Both these versions leverage the “Attention” mechanism [5] which has shown great success in various ML fields, e.g. for NLP with Transformers.</p>
+<p>We will use the Pytorch Geometric PyG, which is the most popular graph deep learning framework built on top of Pytorch. PyG is suitable to quickly implement GNN models, with abundant graph models already implemented for a wide range of applications related to structured data. Moreover, GraphGym, available as part of the PyG, allows a training/evaluation pipeline to be built in a few lines of code.</p>
+
+
+
+
+<h1 id="graph-attention-networks">Graph Attention Networks
+  <a href="#graph-attention-networks" title="Link to heading"></a>
+</h1>
+<p>GraphSAGE and many other popular GNN architectures weigh all neighbors messages with equal importance (e.g mean or max-pooling as AGGREGATE). However, every node in a GAT model updates its representation by attending to its neighbors using its own representation as the query. Thus, every node computes a weighted average of its neighbors, and selects its most relevant neighbors.</p>
+<p>This model utilizes an attention mechanism α(ij) to determine the importance of each message being passed by different nodes in the neighborhood as in the following Figure, showing a single attention mechanism</p>
+<p>To compute the attention score between two neighbors, a scoring function e computes a score for every edge h(j,i) which indicates the importance of the features of the neighbor j to the node i where a shared attentional mechanism “a” and a shared linear transformation parametrized by the weight matrix “W” are learned.</p>
+
+
+
+
+<h1 id="implementation-of-gat-with-python-geometricpyg">Implementation of GAT with Python Geometric(PyG)
+  <a href="#implementation-of-gat-with-python-geometricpyg" title="Link to heading"></a>
+</h1>
+<p>We can implement a simplified version of a GAT conv layer using PyG, based on the equations listed above. Equations and dimensions of output of each layer have been commented to improve readability and understanding.</p>
+<p>PyG provides the MessagePassing base class, which helps in creating such kinds of message passing graph neural networks by automatically taking care of message propagation. The base class provides a few helpful functions.</p>
+<p>Firstly, message() function allows you to define what node information do we want to pass for each edge, and the aggregate function allows us to define how we intend to merge the messages from all edges to the target node (“add”, “mean”, “max”, etc). Finally, the propagate() function helps us to run the message passing and aggregation over all the edges and nodes in the graph. Further details can be found at the official PyG documentation [11].</p>
+<p>Even though a prebuilt GATConv is available, let’s start by writing a custom GAT layer using the messagePassing base class to better understand how it works.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">myGAT</span><span class="p">(</span><span class="n">MessagePassing</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">heads</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+                 <span class="n">negative_slope</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">dropout</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">myGAT</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">node_dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span> <span class="o">=</span> <span class="n">in_channels</span> <span class="c1"># node features input dimension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_channels</span> <span class="o">=</span> <span class="n">out_channels</span> <span class="c1"># node level output dimension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heads</span> <span class="o">=</span> <span class="n">heads</span> <span class="c1"># No. of attention heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">negative_slope</span> <span class="o">=</span> <span class="n">negative_slope</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">dropout</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_l</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_r</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">att_l</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">att_r</span> <span class="o">=</span> <span class="bp">None</span>
+     
+        <span class="c1"># Initialization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_l</span> <span class="o">=</span> <span class="n">Linear</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">heads</span><span class="o">*</span><span class="n">out_channels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lin_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lin_l</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">att_l</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">heads</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">att_r</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">heads</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin_l</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lin_r</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">att_l</span><span class="p">)</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">att_r</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        
+        <span class="n">H</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_channels</span> <span class="c1"># DIM：H, outC</span>
+
+        <span class="c1">#Linearly transform node feature matrix.</span>
+        <span class="n">x_source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lin_l</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="n">C</span><span class="p">)</span> <span class="c1"># DIM: [Nodex x In] [in x H * outC] =&gt; [nodes x H * outC] =&gt; [nodes, H, outC]</span>
+        <span class="n">x_target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lin_r</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="n">C</span><span class="p">)</span> <span class="c1"># DIM: [Nodex x In] [in x H * outC] =&gt; [nodes x H * outC] =&gt; [nodes, H, outC]</span>
+
+        <span class="c1"># Alphas will be used to calculate attention later</span>
+        <span class="n">alpha_l</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_source</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">att_l</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># DIM: [nodes, H, outC] x [H, outC] =&gt; [nodes, H]</span>
+        <span class="n">alpha_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_target</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">att_r</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># DIM: [nodes, H, outC] x [H, outC] =&gt; [nodes, H]</span>
+
+        <span class="c1">#  Start propagating messages (runs message and aggregate)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="p">(</span><span class="n">x_source</span><span class="p">,</span> <span class="n">x_target</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="p">(</span><span class="n">alpha_l</span><span class="p">,</span> <span class="n">alpha_r</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span> <span class="c1"># DIM: [nodes, H, outC]</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">heads</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_channels</span><span class="p">)</span> <span class="c1"># DIM: [nodes, H * outC]</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_j</span><span class="p">,</span> <span class="n">alpha_j</span><span class="p">,</span> <span class="n">alpha_i</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">size_i</span><span class="p">):</span>
+        <span class="c1"># Calculate attention for edge pairs</span>
+        <span class="n">attention</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">((</span><span class="n">alpha_j</span> <span class="o">+</span> <span class="n">alpha_i</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">negative_slope</span><span class="p">)</span> <span class="c1"># EQ(1) DIM: [Edges, H]</span>
+        <span class="n">attention</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">attention</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">size_i</span><span class="p">)</span> <span class="c1"># EQ(2) DIM: [Edges, H] | This softmax only calculates it over all neighbourhood nodes</span>
+        <span class="n">attention</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">attention</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span> <span class="c1"># DIM: [Edges, H]</span>
+
+        <span class="c1"># Multiple attention with node features for all edges</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">x_j</span> <span class="o">*</span> <span class="n">attention</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># EQ(3.1) [Edges, H, outC] x [Edges, H] = [Edges, H, outC];</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim_size</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="c1"># EQ(3.2) For each node, aggregate messages for all neighbourhood nodes </span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">torch_scatter</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_dim</span><span class="p">,</span> 
+                                    <span class="n">dim_size</span><span class="o">=</span><span class="n">dim_size</span><span class="p">,</span> <span class="nb">reduce</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span> <span class="c1"># inputs (from message) DIM: [Edges, H, outC] =&gt; DIM: [Nodes, H, outC]</span>
+  
+        <span class="k">return</span> <span class="n">out</span>
+</code></pre></div><p>Now with the layer all setup, in practice we will then use these convolution layers to create a neural network for us to use. Each layer consists of running the convolution layer, followed by a Relu nonlinear function and dropout. They can be stacked multiple times, and at the end we can add some output layers.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">GATmodif</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span><span class="n">args</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GATmodif</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1">#use our gat message passing</span>
+        <span class="c1">## CONV layers - replace to try different GAT versions-----------------</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">myGAT</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">myGAT</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;heads&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">)</span>
+        <span class="c1"># --------------------------------------------------------------------</span>
+        <span class="c1"># Eg. for prebuilt GAT use </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">GATConv</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">heads</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;heads&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">GATConv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;heads&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">heads</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;heads&#39;</span><span class="p">])</span>
+        <span class="c1">## --------------------------------------------------------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_mp</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;heads&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;dropout&#39;</span><span class="p">]</span> <span class="p">),</span> 
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">))</span>
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">adj</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">edge_index</span>
+        <span class="c1"># Layer 1</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span>
+
+        <span class="c1"># Layer 2</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span>
+
+        <span class="c1"># MLP output</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_mp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        
+</code></pre></div><p>Next, the metric manager helps to calculate all the required metrics at each epoch. The metric manager also has a built-in function to help calculate the best results for the entire run.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">MetricManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;train&#34;</span><span class="p">,</span> <span class="s2">&#34;val&#34;</span><span class="p">]):</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;accuracy&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;f1micro&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;f1macro&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;aucroc&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="c1">#new</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;precision&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;recall&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;cm&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="k">def</span> <span class="nf">store_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">pred_scores</span><span class="p">,</span> <span class="n">target_labels</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+
+    <span class="c1"># calculate metrics</span>
+    <span class="n">pred_labels</span> <span class="o">=</span> <span class="n">pred_scores</span> <span class="o">&gt;</span> <span class="n">threshold</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">target_labels</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">)</span>
+    <span class="n">f1micro</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">target_labels</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">,</span><span class="n">average</span><span class="o">=</span><span class="s1">&#39;micro&#39;</span><span class="p">)</span>
+    <span class="n">f1macro</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">target_labels</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">,</span><span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
+    <span class="n">aucroc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">target_labels</span><span class="p">,</span> <span class="n">pred_scores</span><span class="p">)</span>
+    <span class="c1">#new</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">target_labels</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">)</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">target_labels</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">)</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">target_labels</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">)</span>
+
+    <span class="c1"># Collect results</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;accuracy&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;f1micro&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f1micro</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;f1macro&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f1macro</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;aucroc&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aucroc</span><span class="p">)</span>
+    <span class="c1">#new</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;recall&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recall</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;precision&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">precision</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="s2">&#34;cm&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cm</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">f1micro</span><span class="p">,</span><span class="n">f1macro</span><span class="p">,</span> <span class="n">aucroc</span><span class="p">,</span><span class="n">recall</span><span class="p">,</span><span class="n">precision</span><span class="p">,</span><span class="n">cm</span>
+  
+  <span class="c1"># Get best results</span>
+  <span class="k">def</span> <span class="nf">get_best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&#34;val&#34;</span><span class="p">):</span>
+
+    <span class="c1"># Get best results index</span>
+    <span class="n">best_results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="n">metric</span><span class="p">])</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+
+    <span class="c1"># Output</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+      <span class="n">best_results</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="n">m</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">best_results</span>
+</code></pre></div><p>After configuring the optimizer and criterion, training can run smoothly. Adam optimizer is used as it generally has a good balance between speed of convergence and stability.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># Setup args and model</span>
+<span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;epochs&#34;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;lr&#39;</span><span class="p">:</span><span class="mf">0.01</span><span class="p">,</span> <span class="s1">&#39;weight_decay&#39;</span><span class="p">:</span><span class="mf">1e-5</span><span class="p">,</span> <span class="s1">&#39;prebuild&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span> <span class="s1">&#39;heads&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;num_layers&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;hidden_dim&#39;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span> <span class="s1">&#39;dropout&#39;</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">}</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">GATmodif</span><span class="p">(</span><span class="n">data_train</span><span class="o">.</span><span class="n">num_node_features</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="c1"># Change model as required, but arguments are consistent</span>
+
+<span class="c1"># Push data to GPU</span>
+<span class="n">data_train</span> <span class="o">=</span> <span class="n">data_train</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="c1"># Setup training settings</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">],</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;weight_decay&#39;</span><span class="p">])</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">)</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BCELoss</span><span class="p">()</span>
+
+<span class="c1"># Train</span>
+<span class="n">gnn_trainer_gatmodif</span> <span class="o">=</span> <span class="n">GnnTrainer</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">gnn_trainer_gatmodif</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data_train</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+<span class="n">gnn_trainer_gatmodif</span><span class="o">.</span><span class="n">save_metrics</span><span class="p">(</span><span class="s2">&#34;GATmodifhead2_newmetrics.results&#34;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">FOLDERNAME</span> <span class="o">+</span> <span class="s2">&#34;/save_results/&#34;</span><span class="p">)</span>
+<span class="n">gnn_trainer_gatmodif</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="s2">&#34;GATmodifhead2_newmetrics.pth&#34;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">FOLDERNAME</span> <span class="o">+</span> <span class="s2">&#34;/save_results/&#34;</span><span class="p">)</span>
+
+<span class="n">Output</span> <span class="n">looks</span> <span class="n">like</span><span class="p">:</span>
+<span class="c1"># epoch: 0 - loss: 0.7031 - accuracy train: 0.4681 -accuracy valid: 0.4591  - val roc: 0.5025  - val f1micro: 0.4591</span>
+<span class="c1"># epoch: 5 - loss: 0.4539 - accuracy train: 0.9021 -accuracy valid: 0.9041  - val roc: 0.5887  - val f1micro: 0.9041</span>
+<span class="c1"># epoch: 10 - loss: 0.3791 - accuracy train: 0.9021 -accuracy valid: 0.9041  - val roc: 0.6060  - val f1micro: 0.9041</span>
+<span class="c1"># epoch: 15 - loss: 0.3451 - accuracy train: 0.9017 -accuracy valid: 0.9035  - val roc: 0.6035  - val f1micro: 0.9035</span>
+<span class="c1"># epoch: 20 - loss: 0.3210 - accuracy train: 0.9021 -accuracy valid: 0.9041  - val roc: 0.6466  - val f1micro: 0.9041</span>
+</code></pre></div>
+
+
+
+<h1 id="attention-mechanism-with-gnn">Attention Mechanism with GNN
+  <a href="#attention-mechanism-with-gnn" title="Link to heading"></a>
+</h1>
+<p>Whereas GATv2 can compute a dynamic attention which overcomes the previous limitation of the GAT model, every query has a different ranking of attention coefficients of the keys. We can finally define static attention and dynamic attention which make GAT and GATv2 different.</p>
+<p>Attention is a mechanism for computing a distribution over a set of input key vectors, given an additional query vector.</p>
+<p>Every function f ∈ F (family of scoring functions) has a key that is always selected, regardless of the query and this cannot model situations where different keys have different relevance to different queries. Thus, to prevent this limitation, we have the dynamic attention.</p>
+<p>We compute a dynamic attention for any set of node representations, such that there exists a constant mappings φ that map all inputs to the same output.</p>
+<p>The GATv2 model performs better than the first version GAT, because it uses a dynamic graph attention variant that has a universal approximator attention function, it is more expressive than the other model, based on a static attention. We can see those differences in the following Figure:</p>
+<div class="figure" style="text-align: center">
+<img src="img/attention.webp" alt="The deploy contexts section after clicking the Edit settings button. This section shows three settings that can be edited. The first is the production branch which is set to 'main' in a free text box. The second is deploy previews which is a radio button set to 'any pull request against your production branch/branch deploy branches (as opposed to 'none'). The third is branch deploys which is a radio button set to 'all' (as opposed to 'none' and 'let me add individual branches'). There are two buttons at the bottom of this section, Save and Cancel." width="75%" />
+<p class="caption">Figure 2: Comparison of static vs dynamic attention from original paper GAT </p>
+</div>
+<p>The implementation below shows how we can add the attention mechanism with Pytorch geometric</p>
+<pre><code class="language-pyhton" data-lang="pyhton">class myGATv2(MessagePassing):
+    def __init__(self, in_channels, out_channels, heads = 1,
+                 negative_slope = 0.2, dropout = 0., **kwargs):
+        super(myGATv2, self).__init__(node_dim=0, **kwargs)
+
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.heads = heads
+        self.negative_slope = negative_slope
+        self.dropout = dropout
+
+        self.lin_l = None
+        self.lin_r = None
+        self.att_l = None
+        self.att_r = None
+        self._alpha = None
+        # self.lin_l is the linear transformation that you apply to embeddings 
+        # BEFORE message passing.
+        self.lin_l =  Linear(in_channels, heads*out_channels)
+        self.lin_r = self.lin_l
+
+        self.att = Parameter(torch.Tensor(1, heads, out_channels))
+        self.reset_parameters()
+
+    #initialize parameters with xavier uniform
+    def reset_parameters(self):
+        nn.init.xavier_uniform_(self.lin_l.weight)
+        nn.init.xavier_uniform_(self.lin_r.weight)
+        nn.init.xavier_uniform_(self.att)
+
+    def forward(self, x, edge_index, size = None):
+        
+        H, C = self.heads, self.out_channels # DIM：H, outC
+        #Linearly transform node feature matrix.
+        x_source = self.lin_l(x).view(-1,H,C) # DIM: [Nodex x In] [in x H * outC] =&gt; [nodes x H * outC] =&gt; [nodes, H, outC]
+        x_target = self.lin_r(x).view(-1,H,C) # DIM: [Nodex x In] [in x H * outC] =&gt; [nodes x H * outC] =&gt; [nodes, H, outC]
+        
+        #  Start propagating messages (runs message and aggregate)
+        out= self.propagate(edge_index, x=(x_source,x_target),size=size) # DIM: [nodes, H, outC]
+        out= out.view(-1, self.heads * self.out_channels)       # DIM: [nodes, H * outC]
+        alpha = self._alpha
+        self._alpha = None
+        return out
+
+    #Process a message passing
+    def message(self, x_j,x_i,  index, ptr, size_i):
+        #computation using previous equationss
+        x = x_i + x_j                               
+        x  = F.leaky_relu(x, self.negative_slope)   # See Equation above: Apply the non-linearty function
+        alpha = (x * self.att).sum(dim=-1)          # Apply attnention &quot;a&quot; layer after the non-linearity 
+        alpha = softmax(alpha, index, ptr, size_i)  # This softmax only calculates it over all neighbourhood nodes
+        self._alpha = alpha
+        alpha= F.dropout(alpha,p=self.dropout,training=self.training)
+        # Multiple attention with node features for all edges
+        out= x_j*alpha.unsqueeze(-1)  
+
+        return out
+    #Aggregation of messages
+    def aggregate(self, inputs, index, dim_size = None):
+        out = torch_scatter.scatter(inputs, index, dim=self.node_dim, 
+                                    dim_size=dim_size, reduce='sum')  
+        return out
+        
+</code></pre>
+
+
+
+<h1 id="performance">Performance
+  <a href="#performance" title="Link to heading"></a>
+</h1>
+<p>We ran various combinations of experiments, and the results are shown below. We set out 15% for a validation set from the known classified nodes. In the training process, we ran it for 100 epochs.</p>
+<p>Based on the model performance, we can see that GATv2 prebuilt is the best model, achieving good performance across all metrics. Due to highly imbalanced data, the f1 metrics is a very good representation of overall performance, and 0.92 on F1 macro is very good. It outperforms the GCN benchmark.</p>
+<div class="figure" style="text-align: center">
+<img src="img/performance.webp" alt="The deploy contexts section after clicking the Edit settings button. This section shows three settings that can be edited. The first is the production branch which is set to 'main' in a free text box. The second is deploy previews which is a radio button set to 'any pull request against your production branch/branch deploy branches (as opposed to 'none'). The third is branch deploys which is a radio button set to 'all' (as opposed to 'none' and 'let me add individual branches'). There are two buttons at the bottom of this section, Save and Cancel." width="75%" />
+<p class="caption">Figure 3: Visualization of models performances (Custom — Custom GAT layers, Prebuilt — Prebuilt GATConv layers, 3layers — Custom with 3 GNN layers (instead of 2) </p>
+</div>
+<p>One observation is that the prebuilt GAT layers from PYG perform quite a bit better compared to our custom built GAT layers. This could imply some small tweaks and optimizations that they have done. It also converges much faster to its optimum performance.</p>
+<p>There is a slight performance improvement on most metrics of GATv2 vs GAT, however for our custom built ones we were unable to demonstrate the same uplift.</p>
+<p>Last but not least is that varying the architecture showed different results. For example, we tried a version with 3 instead of 2 GNN layers, but this seemed to lower performance. This can actually happen where more is not always better with GNN. The reason is that when we stack many layers we can experience over-smoothing depending on the size of the graph. This is caused by a big overlap in the neighborhood nodes (called the receptive field) for each target node.</p>
+
+
+
+
+<h1 id="visualization">Visualization
+  <a href="#visualization" title="Link to heading"></a>
+</h1>
+<p>After setting up the model, we can visualize how this looks. Firstly, we pick a time period to reduce the size of the graph as the dataset is segmented into 49 different time periods. After that we will use the NetworkX library to create a graph object, which we will use to plot the diagram.</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Load model </span>
+<span class="n">m1</span> <span class="o">=</span> <span class="n">GATv2</span><span class="p">(</span><span class="n">data_train</span><span class="o">.</span><span class="n">num_node_features</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;hidden_dim&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">double</span><span class="p">()</span>
+<span class="n">m1</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">FOLDERNAME</span> <span class="o">+</span> <span class="s2">&#34;/save_results/&#34;</span> <span class="o">+</span> <span class="s2">&#34;GATv2_vSK2.pth&#34;</span><span class="p">))</span>
+<span class="n">gnn_t2</span> <span class="o">=</span> <span class="n">GnnTrainer</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">gnn_t2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data_train</span><span class="p">,</span> <span class="n">unclassified_only</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">output</span>
+
+<span class="c1"># Get index for one time period</span>
+<span class="n">time_period</span> <span class="o">=</span> <span class="mi">28</span>
+<span class="n">sub_node_list</span> <span class="o">=</span> <span class="n">df_merge</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">df_merge</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">time_period</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># Fetch list of edges for that time period</span>
+<span class="n">edge_tuples</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data_train</span><span class="o">.</span><span class="n">edge_index</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">():</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">sub_node_list</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">sub_node_list</span><span class="p">):</span>
+    <span class="n">edge_tuples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">edge_tuples</span><span class="p">)</span>
+
+<span class="c1"># Fetch predicted results for that time period</span>
+<span class="n">node_color</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">sub_node_list</span><span class="p">:</span>
+  <span class="k">if</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">classified_illicit_idx</span><span class="p">:</span> <span class="c1"># </span>
+     <span class="n">label</span> <span class="o">=</span> <span class="s2">&#34;red&#34;</span> <span class="c1"># fraud</span>
+  <span class="k">elif</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">classified_licit_idx</span><span class="p">:</span>
+     <span class="n">label</span> <span class="o">=</span> <span class="s2">&#34;green&#34;</span> <span class="c1"># not fraud</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;pred_labels&#39;</span><span class="p">][</span><span class="n">node_id</span><span class="p">]:</span>
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&#34;orange&#34;</span> <span class="c1"># Predicted fraud</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">label</span> <span class="o">=</span> <span class="s2">&#34;blue&#34;</span> <span class="c1"># Not fraud predicted </span>
+  
+  <span class="n">node_color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+<span class="c1"># Setup networkx graph</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">edge_tuples</span><span class="p">)</span>
+
+<span class="c1"># Plot the graph</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">))</span> 
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">nodelist</span><span class="o">=</span><span class="n">sub_node_list</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="n">node_color</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div><p>The diagram below has the following legend: Green = Not illicit (not fraud), Red = illicit (Fraud), Blue = Predicted not illicit, Orange = Predicted illicit.</p>
+<div class="figure" style="text-align: center">
+<img src="img/graph.webp" alt="The deploy contexts section after clicking the Edit settings button. This section shows three settings that can be edited. The first is the production branch which is set to 'main' in a free text box. The second is deploy previews which is a radio button set to 'any pull request against your production branch/branch deploy branches (as opposed to 'none'). The third is branch deploys which is a radio button set to 'all' (as opposed to 'none' and 'let me add individual branches'). There are two buttons at the bottom of this section, Save and Cancel." width="75%" />
+<p class="caption">Figure 4: Visualization of original nodes and predicted nodes for time period 28. </p>
+</div>
+<p>Taking a look at the graph, a majority of transactions nodes are heavily linked in a cluster. The actual fraud and the predicted fraud from the new model are fairly distributed among the central cluster and the shorter transaction chains.</p>
+
+
+
+
+<h1 id="conclusion">Conclusion
+  <a href="#conclusion" title="Link to heading"></a>
+</h1>
+<p>Graph Attention Network assign different importance to nodes of a same neighborhood, enabling a leap in model capacity and works on the entire neighboring nodes.</p>
+<p>We show in this tutorial a detailed implementation of GAT and the improved GATv2, a more expressive one which uses dynamic attention by modifying the order of operations; it is more robust to noise edges.</p>
+<p>The prebuilt GAT models both perform very well on the fraud dataset, achieving 0.92 F1 macro and 0.97 accuracy, beating existing benchmarks using GCN. As GATv2 outperforms GAT on several benchmarks, the GATv2 model should be considered as a baseline according to the authors, replacing the original GAT model.</p>
+
+
+
+
+<h1 id="references">References
+  <a href="#references" title="Link to heading"></a>
+</h1>
+<p>1- 
+<a href="www.elliptic.co">Elliptic website</a></p>
+<p>2- Anti-Money Laundering in Bitcoin: Experimenting with Graph Convolutional Networks for Financial Forensics, arXiv:1908.02591, 2019.</p>
+<p>3- M. Weber G. Domeniconi J. Chen D. K. I. Weidele C. Bellei, T. Robinson, C. E. Leiserson, <a href="https://www.kaggle.com/ellipticco/elliptic-data-set,">https://www.kaggle.com/ellipticco/elliptic-data-set,</a> 2019</p>
+<p>4- Graph Attention Networks, Petar Veličković and Guillem Cucurull and Arantxa Casanova and Adriana Romero and Pietro Liò and Yoshua Bengio, arXiv:1710.10903, 2018</p>
+<p>5- Attention Is All You Need, Ashish Vaswani and Noam Shazeer and Niki Parmar and Jakob Uszkoreit and Llion Jones and Aidan N. Gomez and Lukasz Kaiser and Illia Polosukhin, arXiv:1706.03762, 2017.</p>
+<p>6- How Attentive are Graph Attention Networks?, Shaked Brody, Uri Alon, Eran Yahav, arXiv:2105.14491, 2021</p>
+
+        
+        
+<details closed class="f6 fw7 input-reset">
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Posted on:</dt>
+    <dd class="fw5 ml0">December 1, 2022</dd>
+  </dl>
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Length:</dt>
+    <dd class="fw5 ml0">16 minute read, 3251 words</dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Categories:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/categories/graphical-neural-network">Graphical neural network</a>  <a href="https://nadhirhass.netlify.app/categories/anomaly-detection">Anomaly detection</a>  <a href="https://nadhirhass.netlify.app/categories/dynamical-system">Dynamical System</a>  <a href="https://nadhirhass.netlify.app/categories/generative-model">Generative model</a> </dd>
+  </dl>
+  
+  
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">Tags:</dt>
+    <dd class="fw5 ml0"> <a href="https://nadhirhass.netlify.app/tags/graphical-neural-network">Graphical neural network</a>  <a href="https://nadhirhass.netlify.app/tags/anomaly-detection">Anomaly detection</a>  <a href="https://nadhirhass.netlify.app/tags/dynamical-system">Dynamical System</a>  <a href="https://nadhirhass.netlify.app/tags/generative-model">Generative model</a> </dd>
+  </dl>
+  
+  <dl class="f6 lh-copy">
+    <dt class="fw7">See Also:</dt>
+    
+    <dd class="fw5 ml0"><a href="/project/projects/neural_ode_tuto/">Neural ODE Tutorial</a></dd>
+    
+  </dl>
+</details>
+
+      </section>
+      <footer class="post-footer">
+        <div class="post-pagination dt w-100 mt4 mb2">
+  
+  
+    <a class="next dtc pl2 tr v-top fw6"
+    href="https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/">Neural ODE Tutorial &rarr;</a>
+  
+</div>
+
+      </footer>
+    </article>
+    
+  </section>
+</main>
+
+
+<footer class="site-footer pv4 bt b--transparent ph5" role="contentinfo">
+    <nav class="db dt-l w-100">
+    <p class="site-copyright f7 db dtc-l v-mid w-100 w-33-l tc tl-l pv2 pv0-l mv0 lh-copy">
+      &copy; 2023 Nadhir Hassen
+      <span class="middot-divider"></span>
+      Made with <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/hugo-apero/" rel="dct:source">Hugo Apéro</a></span>.
+      <br />
+      
+Based on <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/formspree/blogophonic-hugo" rel="dct:source">Blogophonic</a></span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://formspree.io" property="cc:attributionName" rel="cc:attributionURL">Formspree</a>.
+    </p>
+    
+    <div class="site-social-links db dtc-l v-mid w-100 w-33-l tc pv2 pv0-l mv0">
+      <div class="social-icon-links" aria-hidden="true">
+  
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="/accessibility/" title="universal-access" >
+      <i class="fas fa-universal-access fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://twitter.com/NadeerAct" title="twitter" target="_blank" rel="noopener">
+      <i class="fab fa-twitter fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://github.com/vincehass" title="github" target="_blank" rel="noopener">
+      <i class="fab fa-github fa-lg fa-fw"></i>
+    </a>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <a class="link dib h1 w1 ml0 mr2 f6 o-90 glow" href="https://linkedin.com/in/nadhir-vincent-hass-216391aa" title="linkedin" target="_blank" rel="noopener">
+      <i class="fab fa-linkedin fa-lg fa-fw"></i>
+    </a>
+  
+</div>
+
+    </div>
+    
+    <div class="site-links f6 db dtc-l v-mid w-100 w-67-l tc tr-l pv2 pv0-l mv0">
+      
+      <a class="dib pv1 ph2 link" href="/accessibility/" title="Accessibility Commitment">Accessibility</a>
+      
+      <a class="dib pv1 ph2 link" href="/contact/" title="Contact Form">Contact</a>
+      
+      <a class="dib pv1 ph2 link" href="/license/" title="License Details">License</a>
+      
+      <a class="dib pv1 ph2 link" href="/blog/index.xml/" title="Subscribe via RSS">RSS</a>
+      
+    </div>
+  </nav>
+    <script src="//yihui.org/js/math-code.js"></script>
+    <script async
+      src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+    
+<script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</footer>
+      </div>
+    </body>
+</html>

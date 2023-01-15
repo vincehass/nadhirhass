@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/</link>
+    <description>Recent content on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 01 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fraud detection with Graph Attention Networks</title>
+      <link>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/</link>
+      <pubDate>Thu, 01 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/</guid>
+      <description>Introduction to Fraud detectionFraud detection is a set of processes and analyses that allow businesses to identify and prevent unauthorized financial activity. This can include fraudulent credit card transactions, identify theft, cyber hacking, insurance scams, and more. A fraud occurs when someone takes money or other assets from you through deception or criminal activity.
+Consequently, having an effective fraud detection system can help institutions to identify suspicious behaviors or accounts and minimize losses if the fraud is ongoing.</description>
+    </item>
+    
+    <item>
+      <title>GFlowOut: Dropout with Generative Flow Networks</title>
+      <link>https://nadhirhass.netlify.app/publication/gfn_project/</link>
+      <pubDate>Mon, 07 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/publication/gfn_project/</guid>
+      <description>A key shortcoming of modern deep neural networks is that they are often overconfident about their predictions, especially when there is a distributional shift between train and test dataset Daxberger et al. (2021); Nguyen et al. (2015); Guo et al. (2017). In risk-sensitive scenarios such as clinical practice and drug discovery, where mistakes can be extremely costly, it is important that models provide predictions with reliable uncertainty estimates Bhatt et al. (2021). Bayesian Inference offers principled tools to model the parameters of neural networks as random variables, placing a prior on them and inferring their posterior given some observed data MacKay (1992); Neal (2012). T</description>
+    </item>
+    
+    <item>
+      <title>Deep Reinforcement Learning-WindFarm</title>
+      <link>https://nadhirhass.netlify.app/blog/deep-learning/</link>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/blog/deep-learning/</guid>
+      <description>Reinforcement learning is known to be unstable or even to diverge when a nonlinear function approximator such as a neural network is used to represent the action-value known as Q function.</description>
+    </item>
+    
+    <item>
+      <title>Approximate Bayesian Neural Networks</title>
+      <link>https://nadhirhass.netlify.app/talk/2021-12-14-bnn-slides/</link>
+      <pubDate>Fri, 31 Dec 2021 09:30:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/talk/2021-12-14-bnn-slides/</guid>
+      <description>Descriptionwe address these issues by attempting to demystify the relationship between approximate inference and optimization approaches through the generalized Gauss–Newton method. Bayesian deep learning yields good results, combining Gauss–Newton with Laplace and Gaussian variational approximation. Both methods compute a Gaussian approximation to the posterior; however, it remains unclear how these methods affect the underlying probabilistic model and the posterior approximation. Both methods allow a rigorous analysis of how a particular model fails and the ability to quantify its uncertainty.</description>
+    </item>
+    
+    <item>
+      <title>Neural ODEs</title>
+      <link>https://nadhirhass.netlify.app/blog/nodes/</link>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/blog/nodes/</guid>
+      <description>Instead of specifying a discrete sequence of hidden layers, we parameterize the derivative of the hidden state using a neural network. The output of the network is computed using a black- box differential equation solver.</description>
+    </item>
+    
+    <item>
+      <title>Approximate Bayesian Optimisation for Neural Networks</title>
+      <link>https://nadhirhass.netlify.app/publication/bo_project/</link>
+      <pubDate>Thu, 01 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/publication/bo_project/</guid>
+      <description>A novel Bayesian Optimization method based on a linearized link-function to accounts the under-presented class by using a GP surrogate model. This method is based on Laplace’s method and Gauss-Newton approximations to the Hessian. Our method can improve generalization and be useful when validation data is unavailable (e.g., in nonstationary settings) to solve heteroscedastic behaviours. Our experiments demonstrate that our BO by Gauss-Newton approach competes favorably with state-of-the-art blackbox optimization algorithms.</description>
+    </item>
+    
+    <item>
+      <title>Accessibility commitment</title>
+      <link>https://nadhirhass.netlify.app/accessibility/</link>
+      <pubDate>Tue, 01 Jun 2021 10:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/accessibility/</guid>
+      <description>FeedbackI welcome any feedback on the accessibility of my site and/or the educational materials I create. Please let me know if you encounter any accessibility barriers by using my contact form or mentioning me on Twitter @NadeerAct and I&amp;rsquo;ll do my best to respond promptly.
+Thank you for visiting my site and for taking the time to read this page 
+Accessibility practicesThis site has been designed with the following features in mind:</description>
+    </item>
+    
+    <item>
+      <title>LICENSE: CC-BY-SA</title>
+      <link>https://nadhirhass.netlify.app/license/</link>
+      <pubDate>Tue, 01 Jun 2021 09:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/license/</guid>
+      <description>My blog posts are released under a Creative Commons Attribution-ShareAlike 4.0 International License.
+</description>
+    </item>
+    
+    <item>
+      <title>Stochastic differential equations: Application to epidemiology</title>
+      <link>https://nadhirhass.netlify.app/blog/sde-epidemic/</link>
+      <pubDate>Tue, 01 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/blog/sde-epidemic/</guid>
+      <description>A SIR model is an epidemiological model that calculates the theoretical number of people infected with a contagious disease in a closed population over time.</description>
+    </item>
+    
+    <item>
+      <title>Bayesian Optimization for Heteroscedastic time series</title>
+      <link>https://nadhirhass.netlify.app/talk/2021-05-31-hbo-slides/</link>
+      <pubDate>Mon, 31 May 2021 09:30:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/talk/2021-05-31-hbo-slides/</guid>
+      <description>Heteroscedastic Evolutionary Bayesian Optimization</description>
+    </item>
+    
+    <item>
+      <title>Neural ODE Tutorial</title>
+      <link>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/</link>
+      <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/</guid>
+      <description>Introduction to Neural ODEThe Neural Ordinary Differential Equations paper has attracted significant attention even before it was awarded one of the Best Papers of NeurIPS 2018. The paper already gives many exciting results combining these two disparate fields, but this is only the beginning: neural networks and differential equations were born to be together. This blog post, a collaboration between authors of Flux, DifferentialEquations.jl and the Neural ODEs paper, will explain why, outline current and future directions for this work, and start to give a sense of what&amp;rsquo;s possible with state-of-the-art tools.</description>
+    </item>
+    
+    <item>
+      <title>Probability and Statistics</title>
+      <link>https://nadhirhass.netlify.app/teaching/projects/ml/</link>
+      <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/teaching/projects/ml/</guid>
+      <description>Program overviewPart I Axioms, conditional probability, Bayes rule, combinatorial analysis. Random variables: functions of distribution, mass and density, expectation and variance. Discrete and continuous probability laws. Reliability. Random vectors: correlation, multinormal distribution, central limit theorem Stochastic processes: Markov chains, Poisson process, Brownian motion. Descriptive statistics: diagrams, calculation of characteristics. Sampling distributions: estimate, mean squared error, confidence intervals. - Hypothesis tests: parametric tests and fit test.</description>
+    </item>
+    
+    <item>
+      <title>Kronecker-factored approximation (KFAC) of the Laplace-GGN for Continual Learning</title>
+      <link>https://nadhirhass.netlify.app/publication/continual-learning/</link>
+      <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/publication/continual-learning/</guid>
+      <description>Publication highlighting how Catastrophic Forgetting can be solved by Laplace Gauss-Newton approximation without alternating the complexity cost.</description>
+    </item>
+    
+    <item>
+      <title>Orion-Asynchronous Distributed Hyperparameter Optimization</title>
+      <link>https://nadhirhass.netlify.app/publication/orion_project/</link>
+      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/publication/orion_project/</guid>
+      <description>Oríon is a black-box function optimization library with a key focus on usability and integrability for its users. As a researcher, you can integrate Oríon to your current workflow to tune your models but you can also use Oríon to develop new optimization algorithms and benchmark them with other algorithms in the same context and conditions.</description>
+    </item>
+    
+    <item>
+      <title>Probability and Statistics</title>
+      <link>https://nadhirhass.netlify.app/teaching/projects/mth2303/</link>
+      <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/teaching/projects/mth2303/</guid>
+      <description>Program overviewPart I Axioms, conditional probability, Bayes rule, combinatorial analysis. Random variables: functions of distribution, mass and density, expectation and variance. Discrete and continuous probability laws. Reliability. Random vectors: correlation, multinormal distribution, central limit theorem Stochastic processes: Markov chains, Poisson process, Brownian motion. Descriptive statistics: diagrams, calculation of characteristics. Sampling distributions: estimate, mean squared error, confidence intervals. - Hypothesis tests: parametric tests and fit test.</description>
+    </item>
+    
+    <item>
+      <title>Send me a note</title>
+      <link>https://nadhirhass.netlify.app/contact/</link>
+      <pubDate>Mon, 25 Feb 2019 13:38:41 -0600</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/contact/</guid>
+      <description>** Contact page don&amp;rsquo;t contain a body, just the front matter above. See form.html in the layouts folder.
+Formspree requires a (free) account and new form to be set up. The link is made on the final published url in the field: Restrict to Domain. It is possible to register up to 2 emails free and you can select which one you want the forms to go to within Formspree in the Settings tab.</description>
+    </item>
+    
+  </channel>
+</rss>

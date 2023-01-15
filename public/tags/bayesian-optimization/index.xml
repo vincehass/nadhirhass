@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bayesian Optimization on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/tags/bayesian-optimization/</link>
+    <description>Recent content in Bayesian Optimization on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 07 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/tags/bayesian-optimization/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GFlowOut: Dropout with Generative Flow Networks</title>
+      <link>https://nadhirhass.netlify.app/publication/gfn_project/</link>
+      <pubDate>Mon, 07 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/publication/gfn_project/</guid>
+      <description>A key shortcoming of modern deep neural networks is that they are often overconfident about their predictions, especially when there is a distributional shift between train and test dataset Daxberger et al. (2021); Nguyen et al. (2015); Guo et al. (2017). In risk-sensitive scenarios such as clinical practice and drug discovery, where mistakes can be extremely costly, it is important that models provide predictions with reliable uncertainty estimates Bhatt et al. (2021). Bayesian Inference offers principled tools to model the parameters of neural networks as random variables, placing a prior on them and inferring their posterior given some observed data MacKay (1992); Neal (2012). T</description>
+    </item>
+    
+    <item>
+      <title>Approximate Bayesian Optimisation for Neural Networks</title>
+      <link>https://nadhirhass.netlify.app/publication/bo_project/</link>
+      <pubDate>Thu, 01 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/publication/bo_project/</guid>
+      <description>A novel Bayesian Optimization method based on a linearized link-function to accounts the under-presented class by using a GP surrogate model. This method is based on Laplace’s method and Gauss-Newton approximations to the Hessian. Our method can improve generalization and be useful when validation data is unavailable (e.g., in nonstationary settings) to solve heteroscedastic behaviours. Our experiments demonstrate that our BO by Gauss-Newton approach competes favorably with state-of-the-art blackbox optimization algorithms.</description>
+    </item>
+    
+    <item>
+      <title>Orion-Asynchronous Distributed Hyperparameter Optimization</title>
+      <link>https://nadhirhass.netlify.app/publication/orion_project/</link>
+      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/publication/orion_project/</guid>
+      <description>Oríon is a black-box function optimization library with a key focus on usability and integrability for its users. As a researcher, you can integrate Oríon to your current workflow to tune your models but you can also use Oríon to develop new optimization algorithms and benchmark them with other algorithms in the same context and conditions.</description>
+    </item>
+    
+  </channel>
+</rss>

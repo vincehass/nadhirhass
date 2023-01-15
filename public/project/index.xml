@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/project/</link>
+    <description>Recent content in Projects on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 01 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fraud detection with Graph Attention Networks</title>
+      <link>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/</link>
+      <pubDate>Thu, 01 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/</guid>
+      <description>Introduction to Fraud detectionFraud detection is a set of processes and analyses that allow businesses to identify and prevent unauthorized financial activity. This can include fraudulent credit card transactions, identify theft, cyber hacking, insurance scams, and more. A fraud occurs when someone takes money or other assets from you through deception or criminal activity.
+Consequently, having an effective fraud detection system can help institutions to identify suspicious behaviors or accounts and minimize losses if the fraud is ongoing.</description>
+    </item>
+    
+    <item>
+      <title>Neural ODE Tutorial</title>
+      <link>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/</link>
+      <pubDate>Tue, 04 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto/</guid>
+      <description>Introduction to Neural ODEThe Neural Ordinary Differential Equations paper has attracted significant attention even before it was awarded one of the Best Papers of NeurIPS 2018. The paper already gives many exciting results combining these two disparate fields, but this is only the beginning: neural networks and differential equations were born to be together. This blog post, a collaboration between authors of Flux, DifferentialEquations.jl and the Neural ODEs paper, will explain why, outline current and future directions for this work, and start to give a sense of what&amp;rsquo;s possible with state-of-the-art tools.</description>
+    </item>
+    
+  </channel>
+</rss>

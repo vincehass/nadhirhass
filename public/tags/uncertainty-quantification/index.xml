@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Uncertainty quantification on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/tags/uncertainty-quantification/</link>
+    <description>Recent content in Uncertainty quantification on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 07 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/tags/uncertainty-quantification/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GFlowOut: Dropout with Generative Flow Networks</title>
+      <link>https://nadhirhass.netlify.app/publication/gfn_project/</link>
+      <pubDate>Mon, 07 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/publication/gfn_project/</guid>
+      <description>A key shortcoming of modern deep neural networks is that they are often overconfident about their predictions, especially when there is a distributional shift between train and test dataset Daxberger et al. (2021); Nguyen et al. (2015); Guo et al. (2017). In risk-sensitive scenarios such as clinical practice and drug discovery, where mistakes can be extremely costly, it is important that models provide predictions with reliable uncertainty estimates Bhatt et al. (2021). Bayesian Inference offers principled tools to model the parameters of neural networks as random variables, placing a prior on them and inferring their posterior given some observed data MacKay (1992); Neal (2012). T</description>
+    </item>
+    
+  </channel>
+</rss>

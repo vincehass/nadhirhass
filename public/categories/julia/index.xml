@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Julia on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/categories/julia/</link>
+    <description>Recent content in Julia on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 01 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/categories/julia/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stochastic differential equations: Application to epidemiology</title>
+      <link>https://nadhirhass.netlify.app/blog/sde-epidemic/</link>
+      <pubDate>Tue, 01 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/blog/sde-epidemic/</guid>
+      <description>A SIR model is an epidemiological model that calculates the theoretical number of people infected with a contagious disease in a closed population over time.</description>
+    </item>
+    
+  </channel>
+</rss>

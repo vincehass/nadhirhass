@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hyperparameter optimization on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/categories/hyperparameter-optimization/</link>
+    <description>Recent content in Hyperparameter optimization on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 31 Dec 2021 09:30:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/categories/hyperparameter-optimization/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Approximate Bayesian Neural Networks</title>
+      <link>https://nadhirhass.netlify.app/talk/2021-12-14-bnn-slides/</link>
+      <pubDate>Fri, 31 Dec 2021 09:30:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/talk/2021-12-14-bnn-slides/</guid>
+      <description>Descriptionwe address these issues by attempting to demystify the relationship between approximate inference and optimization approaches through the generalized Gauss–Newton method. Bayesian deep learning yields good results, combining Gauss–Newton with Laplace and Gaussian variational approximation. Both methods compute a Gaussian approximation to the posterior; however, it remains unclear how these methods affect the underlying probabilistic model and the posterior approximation. Both methods allow a rigorous analysis of how a particular model fails and the ability to quantify its uncertainty.</description>
+    </item>
+    
+    <item>
+      <title>Bayesian Optimization for Heteroscedastic time series</title>
+      <link>https://nadhirhass.netlify.app/talk/2021-05-31-hbo-slides/</link>
+      <pubDate>Mon, 31 May 2021 09:30:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/talk/2021-05-31-hbo-slides/</guid>
+      <description>Heteroscedastic Evolutionary Bayesian Optimization</description>
+    </item>
+    
+  </channel>
+</rss>

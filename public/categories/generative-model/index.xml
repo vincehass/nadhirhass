@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Generative model on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/categories/generative-model/</link>
+    <description>Recent content in Generative model on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 01 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/categories/generative-model/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fraud detection with Graph Attention Networks</title>
+      <link>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/</link>
+      <pubDate>Thu, 01 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/project/projects/neural_ode_tuto_anomaly/</guid>
+      <description>Introduction to Fraud detectionFraud detection is a set of processes and analyses that allow businesses to identify and prevent unauthorized financial activity. This can include fraudulent credit card transactions, identify theft, cyber hacking, insurance scams, and more. A fraud occurs when someone takes money or other assets from you through deception or criminal activity.
+Consequently, having an effective fraud detection system can help institutions to identify suspicious behaviors or accounts and minimize losses if the fraud is ongoing.</description>
+    </item>
+    
+  </channel>
+</rss>

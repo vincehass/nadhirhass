@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HPO on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/tags/hpo/</link>
+    <description>Recent content in HPO on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 31 May 2021 09:30:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/tags/hpo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bayesian Optimization for Heteroscedastic time series</title>
+      <link>https://nadhirhass.netlify.app/talk/2021-05-31-hbo-slides/</link>
+      <pubDate>Mon, 31 May 2021 09:30:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/talk/2021-05-31-hbo-slides/</guid>
+      <description>Heteroscedastic Evolutionary Bayesian Optimization</description>
+    </item>
+    
+  </channel>
+</rss>

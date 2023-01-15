@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dynamical Systems on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/categories/dynamical-systems/</link>
+    <description>Recent content in Dynamical Systems on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 02 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/categories/dynamical-systems/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Neural ODEs</title>
+      <link>https://nadhirhass.netlify.app/blog/nodes/</link>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/blog/nodes/</guid>
+      <description>Instead of specifying a discrete sequence of hidden layers, we parameterize the derivative of the hidden state using a neural network. The output of the network is computed using a black- box differential equation solver.</description>
+    </item>
+    
+    <item>
+      <title>Stochastic differential equations: Application to epidemiology</title>
+      <link>https://nadhirhass.netlify.app/blog/sde-epidemic/</link>
+      <pubDate>Tue, 01 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/blog/sde-epidemic/</guid>
+      <description>A SIR model is an epidemiological model that calculates the theoretical number of people infected with a contagious disease in a closed population over time.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reinforcement Learning on Nadhir Hassen</title>
+    <link>https://nadhirhass.netlify.app/categories/reinforcement-learning/</link>
+    <description>Recent content in Reinforcement Learning on Nadhir Hassen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 01 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://nadhirhass.netlify.app/categories/reinforcement-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Deep Reinforcement Learning-WindFarm</title>
+      <link>https://nadhirhass.netlify.app/blog/deep-learning/</link>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://nadhirhass.netlify.app/blog/deep-learning/</guid>
+      <description>Reinforcement learning is known to be unstable or even to diverge when a nonlinear function approximator such as a neural network is used to represent the action-value known as Q function.</description>
+    </item>
+    
+  </channel>
+</rss>
